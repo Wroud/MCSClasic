@@ -28,8 +28,6 @@ namespace Minecraft_Server.Server.Network
         }
         public override void APacket(byte o)
         {
-            if (encrypted)
-                o = this.decryptCipher.ProcessByte(o)[0];
             Log.Info("Get packet: " + o);
             Network.GetPacket(o).Invoke(this);
         }

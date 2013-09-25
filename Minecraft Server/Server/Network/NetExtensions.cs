@@ -35,20 +35,14 @@ namespace Minecraft_Server
         public static void Write(this TcpClientm tc, string n)
         {
             byte[] data = UnicodeEncoding.BigEndianUnicode.GetBytes(n.ToCharArray());
-            if (tc.encrypted)
-                data = tc.encryptCipher.ProcessBytes(data);
             tc.write.Write(data, 0, data.Length);
         }
         public static void Write(this TcpClientm tc, byte n)
         {
-            if (tc.encrypted)
-                n = tc.encryptCipher.ProcessByte(n)[0];
             tc.write.Write(n);
         }
         public static void Write(this TcpClientm tc, byte[] n)
         {
-            if (tc.encrypted)
-                n = tc.encryptCipher.ProcessBytes(n);
             tc.write.Write(n);
         }
         public static void Write(this TcpClientm tc, short n)
@@ -58,8 +52,6 @@ namespace Minecraft_Server
                 (byte)((n & 0xFF00) >> 8),
                 (byte)(n & 0xFF)
             };
-            if (tc.encrypted)
-                data = tc.encryptCipher.ProcessBytes(data);
             tc.write.Write(data, 0, data.Length);
         }
         public static void Write(this TcpClientm tc, int n)
@@ -71,8 +63,6 @@ namespace Minecraft_Server
                 (byte)((n & 0xFF00) >> 8),
                 (byte)(n & 0xFF)
             };
-            if (tc.encrypted)
-                data = tc.encryptCipher.ProcessBytes(data);
             tc.write.Write(data, 0, data.Length);
         }
         public unsafe static void Write(this TcpClientm tc, float n)
@@ -85,8 +75,6 @@ namespace Minecraft_Server
                 (byte)((nn & 0xFF00) >> 8),
                 (byte)(nn & 0xFF)
             };
-            if (tc.encrypted)
-                data = tc.encryptCipher.ProcessBytes(data);
             tc.write.Write(data, 0, data.Length);
         }
         public static void Write(this TcpClientm tc, long n)
@@ -102,8 +90,6 @@ namespace Minecraft_Server
                 (byte)((n & 0xFF00) >> 8),
                 (byte)(n & 0xFF)
             };
-            if (tc.encrypted)
-                data = tc.encryptCipher.ProcessBytes(data);
             tc.write.Write(data, 0, data.Length);
         }
 
@@ -122,9 +108,6 @@ namespace Minecraft_Server
         {
             byte[] b = new byte[1];
             reader.Read(b, 0, 1);
-            if (tc.encrypted)
-                return tc.decryptCipher.ProcessByte(b[0])[0];
-            else
                 return b[0];
         }
 
@@ -132,8 +115,6 @@ namespace Minecraft_Server
         {
             byte[] b = new byte[count];
             reader.Read(b, 0, count);
-            if (tc.encrypted)
-                b = tc.decryptCipher.ProcessBytes(b);
             return b;
         }
 
@@ -142,8 +123,6 @@ namespace Minecraft_Server
             int count = 2;
             byte[] b = new byte[count];
             reader.Read(b, 0, count);
-            if (tc.encrypted)
-                b = tc.decryptCipher.ProcessBytes(b);
             b = b.Reverse();
             return BitConverter.ToInt16(b, 0);
         }
@@ -153,8 +132,6 @@ namespace Minecraft_Server
             int count = 4;
             byte[] b = new byte[count];
             reader.Read(b, 0, count);
-            if (tc.encrypted)
-                b = tc.decryptCipher.ProcessBytes(b);
             b = b.Reverse();
             return BitConverter.ToInt32(b, 0);
         }
@@ -164,8 +141,6 @@ namespace Minecraft_Server
             int count = 8;
             byte[] b = new byte[count];
             reader.Read(b, 0, count);
-            if (tc.encrypted)
-                b = tc.decryptCipher.ProcessBytes(b);
             b = b.Reverse();
             return BitConverter.ToInt64(b, 0);
         }

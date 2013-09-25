@@ -8,11 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Minecraft_Server;
 using Minecraft_Server.Framework.Util;
-using Craft.Net.Networking;
-using Org.BouncyCastle.Crypto;
-using Org.BouncyCastle.Crypto.Modes;
-using Org.BouncyCastle.Crypto.Engines;
-using Org.BouncyCastle.Crypto.Parameters;
 using System.Threading;
 
 namespace Minecraft_Server.Framework.Network
@@ -21,9 +16,6 @@ namespace Minecraft_Server.Framework.Network
     {
         private TcpClient tcp;
         public NetworkStream NetStream;
-        public BufferedBlockCipher decryptCipher;
-        public BufferedBlockCipher encryptCipher;
-        public bool encrypted = false;
         public bool Proccess = false;
         public bool Write = false;
         public BinaryWriter write;
@@ -54,17 +46,6 @@ namespace Minecraft_Server.Framework.Network
 
             this.opcode = new byte[1];
             this.NetStream.BeginRead(this.opcode, 0, 1, this.AcceptPacket, null);
-        }
-        public void EncryptStream(byte[] key)
-        {
-            this.NetStream.Flush();
-            encryptCipher = new BufferedBlockCipher(new CfbBlockCipher(new AesFastEngine(), 8));
-            encryptCipher.Init(true, new ParametersWithIV(
-                new KeyParameter(key), key, 0, 16));
-            decryptCipher = new BufferedBlockCipher(new CfbBlockCipher(new AesFastEngine(), 8));
-            decryptCipher.Init(false, new ParametersWithIV(
-                new KeyParameter(key), key, 0, 16));
-            encrypted = true;
         }
         public void Close()
         {
