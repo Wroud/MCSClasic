@@ -14,3 +14,4 @@ C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Clasic\Minecraft Server\
 C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Clasic\Minecraft Server\obj\Debug\Minecraft Server.csproj.ResolveComReference.cache
 C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Clasic\Minecraft Server\obj\Debug\Minecraft Server.exe
 C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Clasic\Minecraft Server\obj\Debug\Minecraft Server.pdb
+C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Clasic\Minecraft Server\obj\Debug\Minecraft Server.csprojResolveAssemblyReference.cache
