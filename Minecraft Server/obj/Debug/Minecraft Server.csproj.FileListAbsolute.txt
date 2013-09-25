@@ -14,3 +14,20 @@ C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Clasic\Minecraft Server\
 C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Clasic\Minecraft Server\obj\Debug\Minecraft Server.csproj.ResolveComReference.cache
 C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Clasic\Minecraft Server\obj\Debug\Minecraft Server.exe
 C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Clasic\Minecraft Server\obj\Debug\Minecraft Server.pdb
+C:\Users\Alexandr\Documents\Visual Studio 2012\Projects\C#ClassicServer\trunk\Minecraft Server\bin\Debug\Minecraft Server.exe.config
+C:\Users\Alexandr\Documents\Visual Studio 2012\Projects\C#ClassicServer\trunk\Minecraft Server\obj\Debug\Interop.ADOX.dll
+C:\Users\Alexandr\Documents\Visual Studio 2012\Projects\C#ClassicServer\trunk\Minecraft Server\obj\Debug\Minecraft Server.csproj.ResolveComReference.cache
+C:\Users\Alexandr\Documents\Visual Studio 2012\Projects\C#ClassicServer\trunk\Minecraft Server\obj\Debug\Minecraft Server.exe
+C:\Users\Alexandr\Documents\Visual Studio 2012\Projects\C#ClassicServer\trunk\Minecraft Server\obj\Debug\Minecraft Server.pdb
+C:\Users\Alexandr\Documents\Visual Studio 2012\Projects\C#ClassicServer\trunk\Minecraft Server\bin\Debug\key
+C:\Users\Alexandr\Documents\Visual Studio 2012\Projects\C#ClassicServer\trunk\Minecraft Server\bin\Debug\Minecraft Server.exe
+C:\Users\Alexandr\Documents\Visual Studio 2012\Projects\C#ClassicServer\trunk\Minecraft Server\bin\Debug\Minecraft Server.pdb
+C:\Users\Alexandr\Documents\Visual Studio 2012\Projects\C#ClassicServer\trunk\Minecraft Server\bin\Debug\BouncyCastle.Crypto.dll
+C:\Users\Alexandr\Documents\Visual Studio 2012\Projects\C#ClassicServer\trunk\Minecraft Server\bin\Debug\Craft.Net.Common.dll
+C:\Users\Alexandr\Documents\Visual Studio 2012\Projects\C#ClassicServer\trunk\Minecraft Server\bin\Debug\Craft.Net.dll
+C:\Users\Alexandr\Documents\Visual Studio 2012\Projects\C#ClassicServer\trunk\Minecraft Server\bin\Debug\fNbt.dll
+C:\Users\Alexandr\Documents\Visual Studio 2012\Projects\C#ClassicServer\trunk\Minecraft Server\bin\Debug\Craft.Net.pdb
+C:\Users\Alexandr\Documents\Visual Studio 2012\Projects\C#ClassicServer\trunk\Minecraft Server\bin\Debug\Craft.Net.Common.pdb
+C:\Users\Alexandr\Documents\Visual Studio 2012\Projects\C#ClassicServer\trunk\Minecraft Server\bin\Debug\fNbt.pdb
+C:\Users\Alexandr\Documents\Visual Studio 2012\Projects\C#ClassicServer\trunk\Minecraft Server\bin\Debug\fNbt.xml
+C:\Users\Alexandr\Documents\Visual Studio 2012\Projects\C#ClassicServer\trunk\Minecraft Server\obj\Debug\Minecraft Server.csprojResolveAssemblyReference.cache
