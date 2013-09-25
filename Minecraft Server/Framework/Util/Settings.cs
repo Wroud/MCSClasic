@@ -31,25 +31,22 @@ public class ServerConf
         if (File.Exists("Config.cgf"))
         {
             Readtxt = File.ReadAllLines("Config.cgf");
-            if (Readtxt.Length == 10)
+            Dictionary<string, string> vars = new Dictionary<string, string>();
+            foreach (string len in Readtxt)
             {
-                Conf.generator_settings = Readtxt[0].Substring(Readtxt[0].IndexOf("=") + 1);
-                Conf.level_name = Readtxt[1].Substring(Readtxt[1].IndexOf("=") + 1);
-                Conf.server_port = Readtxt[2].Substring(Readtxt[2].IndexOf("=") + 1);
-                Conf.level_seed = Readtxt[3].Substring(Readtxt[3].IndexOf("=") + 1);
-                Conf.server_ip = Readtxt[4].Substring(Readtxt[4].IndexOf("=") + 1);
-                Conf.white_list = Readtxt[5].Substring(Readtxt[5].IndexOf("=") + 1);
-                Conf.gamemode = Readtxt[6].Substring(Readtxt[6].IndexOf("=") + 1);
-                Conf.max_players = Readtxt[7].Substring(Readtxt[7].IndexOf("=") + 1);
-                Conf.motd = Readtxt[8].Substring(Readtxt[8].IndexOf("=") + 1);
-                Conf.motd = Readtxt[9].Substring(Readtxt[9].IndexOf("=") + 1);
+                string[] sp = len.Split('=');
+                vars.Add(sp[0].Replace(" ",""), sp[1]);
             }
-            else
-            {
-                File.Delete("Config.cgf");
-             //   Console.WriteLine("Error to read configuration." + Constants.vbCrLf + "Click Enter to restart...");
-                Console.Read();
-            }
+            Conf.generator_settings = vars["generator-settings"];
+            Conf.level_name = vars["level-name"];
+            Conf.server_port = vars["server-port"];
+            Conf.level_seed = vars["level-seed"];
+            Conf.server_ip = vars["server-ip"];
+            Conf.white_list = vars["white-list"];
+            Conf.gamemode = vars["gamemode"];
+            Conf.max_players = vars["max-players"];
+            Conf.motd = vars["motd"];
+            Conf.Salt = vars["salt"];
             return "Configuration file is loading";
         }
         else

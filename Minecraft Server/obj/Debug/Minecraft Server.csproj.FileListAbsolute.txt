@@ -1,0 +1,3 @@
+C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\bin\Debug\Minecraft Server.exe.config
+C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Clasic\Minecraft Server\obj\Debug\Interop.ADOX.dll
+C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Clasic\Minecraft Server\obj\Debug\Minecraft Server.csproj.ResolveComReference.cache
