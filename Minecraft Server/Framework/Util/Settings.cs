@@ -8,25 +8,24 @@ public class ServerConf
 {
 
     #region "ConfigStructure"
-    public struct Config
+    public static struct Config
     {
-        public string generator_settings;
-        public string level_name;
-        public string server_port;
-        public string level_seed;
-        public string server_ip;
-        public string white_list;
-        public string gamemode;
-        public string max_players;
-        public string motd;
-        public string Salt;
+        public static string generator_settings;
+        public static string level_name;
+        public static string server_port;
+        public static string level_seed;
+        public static string server_ip;
+        public static string white_list;
+        public static string gamemode;
+        public static string max_players;
+        public static string motd;
+        public static string Salt;
     }
     #endregion
 
-    public string Start()
+    public static string Start()
     {
 
-        Config Conf = new Config();
         string[] Readtxt = null;
         if (File.Exists("Config.cgf"))
         {
@@ -37,16 +36,16 @@ public class ServerConf
                 string[] sp = len.Split('=');
                 vars.Add(sp[0].Replace(" ",""), sp[1]);
             }
-            Conf.generator_settings = vars["generator-settings"];
-            Conf.level_name = vars["level-name"];
-            Conf.server_port = vars["server-port"];
-            Conf.level_seed = vars["level-seed"];
-            Conf.server_ip = vars["server-ip"];
-            Conf.white_list = vars["white-list"];
-            Conf.gamemode = vars["gamemode"];
-            Conf.max_players = vars["max-players"];
-            Conf.motd = vars["motd"];
-            Conf.Salt = vars["salt"];
+            Config.generator_settings = vars["generator-settings"];
+            Config.level_name = vars["level-name"];
+            Config.server_port = vars["server-port"];
+            Config.level_seed = vars["level-seed"];
+            Config.server_ip = vars["server-ip"];
+            Config.white_list = vars["white-list"];
+            Config.gamemode = vars["gamemode"];
+            Config.max_players = vars["max-players"];
+            Config.motd = vars["motd"];
+            Config.Salt = vars["salt"];
             return "Configuration file is loading";
         }
         else
