@@ -15,7 +15,7 @@ namespace Minecraft_Server.Server.Network.Packets
         {
             byte pv = d.NetStream.ReadByte(d);
             byte[] st = d.NetStream.ReadBytes(d, 64);
-            string str = UnicodeEncoding.BigEndianUnicode.GetChars(st).ToString();
+            string str = new string(UnicodeEncoding.BigEndianUnicode.GetChars(st));
             byte[] vk = d.NetStream.ReadBytes(d, 64);
             d.NetStream.ReadByte(d);
         }
