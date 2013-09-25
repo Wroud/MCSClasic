@@ -14,7 +14,7 @@ namespace Minecraft_Server.Framework.Network
         public abstract void Write();
         #endregion
 
-        public static String ReadString(TcpClientm data, int max)
+        public static string ReadString(TcpClientm data, int max)
         {
             short chars = data.NetStream.ReadInt16(data);
             if (chars > max)

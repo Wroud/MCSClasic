@@ -53,27 +53,15 @@ namespace Minecraft_Server.Server.Client
                 .Concat(encodedKey.GetBytes()).ToArray();
 
             string hash = Cryptography.JavaHexDigest(shaData);
-            new Packet1Login(this.Net).Write();
-            Thread.Sleep(10);
-            //new Packet250CustomPayload(this.Net).Write();
-            //Thread.Sleep(10);
-            new Packet6SpawnPosition(this.Net).Write();
-            Thread.Sleep(10);
-            new Packet202PlayerAbilities(this.Net).Write();
-            Thread.Sleep(10);
-            new Packet16BlockItemSwitch(this.Net).Write();
-            Thread.Sleep(10);
-            new Packet4UpdateTime(this.Net).Write();
-            Thread.Sleep(10);
         }
 
         public void onSharedKey(byte[] s, byte[] v)
         {
             byte[] t = this.Net.token;
             var decryptedToken = Main.Main.CryptoServiceProvider.Decrypt(v, false);
-            if (!Array.Equals(t, decryptedToken))
-                new Packet255Kick(this.Net, "Bad token");
-            new Packet252SharedKey(this.Net, null, null).Write();
+            //if (!Array.Equals(t, decryptedToken))
+                //new Packet255Kick(this.Net, "Bad token");
+            //new Packet252SharedKey(this.Net, null, null).Write();
 
             this.Net.SharedKey = Main.Main.CryptoServiceProvider.Decrypt(s, false);
             this.Net.EncryptStream(this.Net.SharedKey);
@@ -90,15 +78,15 @@ namespace Minecraft_Server.Server.Client
             {
                 mes = "\u00a7" + "1" + "\u0000" + "74" + "\u0000" + "1.6.2" + "\u0000" + "sesd sd ds" + "\u0000" + "1" + "\u0000" + "12" + "\u0000";
             }
-            new Packet255Kick(this.Net, mes).Write();
+            //new Packet255Kick(this.Net, mes).Write();
             Network.Network.CloseTcpClient(Net.id);
         }
 
         public void onJoin(byte protocolVersion)
         {
-            if (protocolVersion != 74)
-                new Packet255Kick(this.Net, "Bad Version");
-            else
+            //if (protocolVersion != 74)
+                //new Packet255Kick(this.Net, "Bad Version");
+            //else
             {
                 var verifyToken = new byte[4];
                 var csp = new RNGCryptoServiceProvider();
@@ -106,7 +94,7 @@ namespace Minecraft_Server.Server.Client
                 Net.token = verifyToken;
 
                 var encodedKey = AsnKeyBuilder.PublicKeyToX509(Main.Main.ServerKey);
-                new Packet253Auth(this.Net, "-", encodedKey.GetBytes(), verifyToken).Write();
+                //new Packet253Auth(this.Net, "-", encodedKey.GetBytes(), verifyToken).Write();
             }
         }
 
