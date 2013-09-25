@@ -4,25 +4,27 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using System.Threading.Tasks;
+using System.Threading;
+using Minecraft_Server.Framework.Util;
 
 namespace Minecraft_Server.Server.Network
 {
     class HeartBeats
     {
-
-        static System.Timers.Timer time = new System.Timers.Timer();
+        public static WebClient http;
         public static void Start()
         {
-            time.Interval = 1000;
-            time.Start();
-            time.Elapsed += Time_tick;
+            http = new WebClient();
+            Log.Info("HeartBeat запущен");
+            while (true)
+            {
+                Time_tick();
+                Thread.Sleep(45000);
+            }
         }
-        private static void Time_tick(System.Object sender, System.EventArgs e)
+        private static void Time_tick()
         {
-            // Тут надо отослать тупо get запрос с параметрами.   P.S пример на vb ниже
-          //  ServerConf.Config Conf = default(ServerConf.Config);
-          //  WebClient http = new WebClient();
-         //  http.DownloadString("https://minecraft.net/heartbeat.jsp" + "?port=" + Conf.server_port + "&max=" + Conf.max_players + "&name=" + Conf.motd + "&public=" + Conf.white_list + "&version=7" + "&salt=" + Conf.Salt + "&users=0"));
+            http.DownloadData("https://minecraft.net/heartbeat.jsp" + "?port=" + ServerConf.Config.server_port + "&max=" + ServerConf.Config.max_players + "&name=" + ServerConf.Config.motd + "&public=" + ServerConf.Config.white_list + "&version=7" + "&salt=" + ServerConf.Config.Salt + "&users=0");
         }
     }
 }

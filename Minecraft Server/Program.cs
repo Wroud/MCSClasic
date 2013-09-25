@@ -27,6 +27,7 @@ namespace Minecraft_Server
             }
             Network.Run();
             Log.Info("Сервер запущен");
+            HeartBeats.Start();
             while (true)
                 Thread.Sleep(700);
         }

@@ -13,16 +13,16 @@ public class ServerConf
     #region "ConfigStructure"
     public struct Config
     {
-        public static string generator_settings;
-        public static string level_name;
-        public static string server_port;
-        public static string level_seed;
-        public static string server_ip;
-        public static string white_list;
-        public static string gamemode;
-        public static string max_players;
-        public static string motd;
-        public static string Salt;
+        public static string generator_settings = "Nothing";
+        public static string level_name = "world";
+        public static string server_port = "25565";
+        public static string level_seed = "22";
+        public static string server_ip = "127.0.0.1";
+        public static string white_list = "true";
+        public static string gamemode = "0";
+        public static string max_players = "20";
+        public static string motd = "A Minecraft Server";
+        public static string Salt = "fhddfhdfhdfhdfh";
     }
     #endregion
 
@@ -54,18 +54,18 @@ public class ServerConf
         else
         {
             string[] Writetxt = new string[10];
-            Writetxt[0] = "generator-settings=Nothing";
-            Writetxt[1] = "level-name=world";
-            Writetxt[2] = "server-port=25565";
-            Writetxt[3] = "level-seed=22";
-            Writetxt[4] = "server-ip=127.0.0.1";
-            Writetxt[5] = "white-list=false";
-            Writetxt[6] = "gamemode=0";
-            Writetxt[7] = "max-players=20";
-            Writetxt[8] = "motd=A Minecraft Server";
-            Writetxt[9] = "salt=fhddfhdfhdfhdfh";
+            Writetxt[0] = "generator-settings="+Config.generator_settings;
+            Writetxt[1] = "level-name=" + Config.level_name;
+            Writetxt[2] = "server-port=" + Config.server_port;
+            Writetxt[3] = "level-seed=" + Config.level_seed;
+            Writetxt[4] = "server-ip=" + Config.server_ip;
+            Writetxt[5] = "white-list=" + Config.white_list;
+            Writetxt[6] = "gamemode=" + Config.gamemode;
+            Writetxt[7] = "max-players=" + Config.max_players;
+            Writetxt[8] = "motd=" + Config.motd;
+            Writetxt[9] = "salt=" + Config.Salt;
             File.WriteAllLines("Config.cgf", Writetxt);
-            Log.Info("Перезагрузите сервер для нормальной работы");
+            Log.Info("Записан Config.cgf");
         }
     }
 }
