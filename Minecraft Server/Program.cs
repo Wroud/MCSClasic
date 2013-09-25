@@ -18,8 +18,8 @@ namespace Minecraft_Server
             Log.Info("Minecraft Server");
             Network.Initz();
             Server.Main.Main.Initz();
-
             Log.Info("Инициализация");
+           // Setting.Start();
             while (!Network.Init && !Server.Main.Main.Init)
             {
                 Thread.Sleep(700);
