@@ -1,5 +1,4 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Express 2012 for Windows Desktop
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minecraft Server", "Minecraft Server\Minecraft Server.csproj", "{26E33307-36CF-426E-A89D-297B0399BCFC}"
 EndProject
