@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
+using Minecraft_Server.Server.Client;
+using Minecraft_Server.Server.Main;
+using Minecraft_Server.Server.Network;
+using Minecraft_Server.Framework.Util;
 using System.IO;
+using System.Threading;
 public class ServerConf
 {
 
     #region "ConfigStructure"
-    public static struct Config
+    public struct Config
     {
         public static string generator_settings;
         public static string level_name;
@@ -23,7 +26,7 @@ public class ServerConf
     }
     #endregion
 
-    public static string Start()
+    public static void Start()
     {
 
         string[] Readtxt = null;
@@ -46,7 +49,7 @@ public class ServerConf
             Config.max_players = vars["max-players"];
             Config.motd = vars["motd"];
             Config.Salt = vars["salt"];
-            return "Configuration file is loading";
+            Log.Info("Конфигурация сервера загружена");
         }
         else
         {
@@ -62,7 +65,7 @@ public class ServerConf
             Writetxt[8] = "motd=A Minecraft Server";
             Writetxt[9] = "salt=fhddfhdfhdfhdfh";
             File.WriteAllLines("Config.cgf", Writetxt);
-            return "Configuration file create";
+            Log.Info("Перезагрузите сервер для нормальной работы");
         }
     }
 }
