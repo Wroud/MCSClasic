@@ -1,0 +1,17 @@
+C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Minecraft Server\Minecraft Server\bin\Debug\Minecraft Server.exe.config
+C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Minecraft Server\Minecraft Server\obj\Debug\Minecraft Server.csprojResolveAssemblyReference.cache
+C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Minecraft Server\Minecraft Server\bin\Debug\Minecraft Server.exe
+C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Minecraft Server\Minecraft Server\bin\Debug\Minecraft Server.pdb
+C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Minecraft Server\Minecraft Server\obj\Debug\Minecraft Server.exe
+C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Minecraft Server\Minecraft Server\obj\Debug\Minecraft Server.pdb
+C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Minecraft Server\Minecraft Server\obj\Debug\Interop.ADOX.dll
+C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Minecraft Server\Minecraft Server\obj\Debug\Minecraft Server.csproj.ResolveComReference.cache
+C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Minecraft Server\Minecraft Server\bin\Debug\key
+C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Minecraft Server\Minecraft Server\bin\Debug\Craft.Net.Common.dll
+C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Minecraft Server\Minecraft Server\bin\Debug\fNbt.dll
+C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Minecraft Server\Minecraft Server\bin\Debug\Craft.Net.Common.pdb
+C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Minecraft Server\Minecraft Server\bin\Debug\fNbt.pdb
+C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Minecraft Server\Minecraft Server\bin\Debug\fNbt.xml
+C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Minecraft Server\Minecraft Server\bin\Debug\BouncyCastle.Crypto.dll
+C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Minecraft Server\Minecraft Server\bin\Debug\Craft.Net.dll
+C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Minecraft Server\Minecraft Server\bin\Debug\Craft.Net.pdb
