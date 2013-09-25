@@ -76,6 +76,7 @@
     <Compile Include="Framework\Network\TcpClientm.cs" />
     <Compile Include="Framework\Object.cs" />
     <Compile Include="Framework\Util\Log.cs" />
+    <Compile Include="Framework\Util\Setting.cs" />
     <Compile Include="Framework\Util\Utils.cs" />
     <Compile Include="Server\Network\Packets\Packet1Login.cs" />
     <Compile Include="Server\Network\Packets\Packet250CustomPayload.cs" />
