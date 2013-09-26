@@ -10,19 +10,32 @@ namespace Minecraft_Server.Server.Network.Packets
     class Packet0Indentification : Framework.Network.Packet
     {
         private byte opcode = 0;
+        private byte protocolVersion;
+        private byte usertype;
+
+        public Packet0Indentification(TcpClientm d,byte pv, byte ut)
+        {
+            this.data = d;
+            this.protocolVersion = pv;
+            this.usertype = ut;
+        }
 
         public static void Read(TcpClientm d)
         {
             byte pv = d.NetStream.ReadByte(d);
-            byte[] st = d.NetStream.ReadBytes(d, 64);
-            string str = new string(UnicodeEncoding.BigEndianUnicode.GetChars(st));
-            byte[] vk = d.NetStream.ReadBytes(d, 64);
+            string str = new string(UnicodeEncoding.ASCII.GetChars(d.NetStream.ReadBytes(d, 64)));
+            string vk = new string(UnicodeEncoding.ASCII.GetChars(d.NetStream.ReadBytes(d, 64)));
             d.NetStream.ReadByte(d);
+            d.cli.onJoin(pv,str,vk);
         }
 
         public override void Write()
         {
             this.data.Write(opcode);
+            this.data.Write(protocolVersion);
+            this.data.Write(ServerConf.Config.server_name);
+            this.data.Write(ServerConf.Config.motd);
+            this.data.Write(usertype);
             this.data.Flush();
         }
     }

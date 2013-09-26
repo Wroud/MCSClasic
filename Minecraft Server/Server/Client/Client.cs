@@ -15,13 +15,8 @@ namespace Minecraft_Server.Server.Client
     {
 
         private Network.TcpClientm Net;
-        public string username { get; set; }
-        public string region;
-        public byte vievdis;
-        public int chatvisible;
-        public bool chatcolor;
-        public byte diffuclity;
-        public bool showCape;
+        public string username;
+        public string verfikey;
         public Client(Network.TcpClientm Net)
             : base(Net)
         {
@@ -36,12 +31,6 @@ namespace Minecraft_Server.Server.Client
 
         public void onClientInfo(string s, byte dis, int chvs, bool ccol, byte dif, bool shc)
         {
-            this.region = s;
-            this.vievdis = dis;
-            this.chatvisible = chvs;
-            this.chatcolor = ccol;
-            this.diffuclity = dif;
-            this.showCape = shc;
         }
 
         public void onCommand(byte c)
@@ -56,8 +45,16 @@ namespace Minecraft_Server.Server.Client
         {
         }
 
-        public void onJoin(byte protocolVersion)
+        public void onJoin(byte protocolVersion,string name,string vk)
         {
+            if (protocolVersion != 7)
+                new PacketKick(this.Net,"Bad protocol version").Write();
+            this.username = name;
+            this.verfikey = vk;
+
+            new Packet0Indentification(this.Net, protocolVersion, 0);//0x64 будет оп
+            Thread.Sleep(10);
+            new Packet2Level(this.Net).Write();
         }
 
         public void onKick()

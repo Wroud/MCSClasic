@@ -34,8 +34,10 @@ namespace Minecraft_Server
         }
         public static void Write(this TcpClientm tc, string n)
         {
-            byte[] data = UnicodeEncoding.BigEndianUnicode.GetBytes(n.ToCharArray());
+            byte[] data = UnicodeEncoding.ASCII.GetBytes(n.ToCharArray());
             tc.write.Write(data, 0, data.Length);
+            for (int i = 0; i < 64 - data.Length; i++)
+                tc.write.Write(32);
         }
         public static void Write(this TcpClientm tc, byte n)
         {
