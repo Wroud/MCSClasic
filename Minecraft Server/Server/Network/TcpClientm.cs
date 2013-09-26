@@ -28,7 +28,6 @@ namespace Minecraft_Server.Server.Network
         }
         public override void APacket(byte o)
         {
-            Log.Info("Get packet: " + o);
             Network.GetPacket(o).Invoke(this);
         }
         public void Close()

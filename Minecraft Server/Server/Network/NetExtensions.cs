@@ -43,6 +43,10 @@ namespace Minecraft_Server
         {
             tc.write.Write(n);
         }
+        public static void Write(this TcpClientm tc, sbyte n)
+        {
+            tc.write.Write(n);
+        }
         public static void Write(this TcpClientm tc, byte[] n)
         {
             tc.write.Write(n);

@@ -72,6 +72,7 @@ namespace Minecraft_Server.Framework.Network
 
                     if (bytesRead == 1)
                     {
+                        Log.Info("Get packet: " + this.opcode[0]);
                         APacket(this.opcode[0]);
                     }
                     else
