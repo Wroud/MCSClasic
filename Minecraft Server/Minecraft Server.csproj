@@ -64,6 +64,7 @@
     <Compile Include="Framework\Network\TcpClientm.cs" />
     <Compile Include="Framework\Object.cs" />
     <Compile Include="Framework\Util\Log.cs" />
+    <Compile Include="Framework\Util\PermissionsConf.cs" />
     <Compile Include="Framework\Util\Utils.cs" />
     <Compile Include="Server\Network\HeartBeats.cs" />
     <Compile Include="Server\Network\Packets\Packet0Indentification.cs" />
