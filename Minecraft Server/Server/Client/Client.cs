@@ -4,9 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Net.Sockets;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -36,6 +34,9 @@ namespace Minecraft_Server.Server.Client
 
         public void onCBlock(short x, short y, short z, byte mod, byte type)
         {
+            foreach (var us in Network.Network.net.connects.Values)
+                if (us.id != Net.id)
+                    new Packet6SetBlock((Minecraft_Server.Server.Network.TcpClientm)us, x, y, z, (mod == (byte)0) ? (byte)0 : type);
         }
 
         public void onPosition(short x, short y, short z, byte yaw, byte pitch)
