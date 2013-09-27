@@ -71,6 +71,7 @@
     <Compile Include="Server\Network\Packets\Packet8Position.cs" />
     <Compile Include="Server\Network\Packets\Client\Packet5Block.cs" />
     <Compile Include="Server\Network\Packets\Packet0Indentification.cs" />
+    <Compile Include="Server\Network\Packets\Server\Packet6SetBlock.cs" />
     <Compile Include="Server\Network\Packets\Server\PacketKick.cs" />
     <Compile Include="Server\Network\Packets\Server\Packet2Level.cs" />
     <Compile Include="Server\Network\Packets\Server\Packet3Chunk.cs" />
