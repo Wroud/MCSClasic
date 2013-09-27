@@ -1,4 +1,5 @@
 ﻿using Minecraft_Server.Framework.Network;
+using Minecraft_Server.Framework.Util;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,7 +18,14 @@ namespace Minecraft_Server
             int pos = (int)tc.buffer.Position;
             tc.Write = false;
             tc.buffer.Position = 0;
-            tc.NetStream.WriteAsync(data, 0, pos);
+            try
+            {
+                tc.NetStream.WriteAsync(data, 0, pos);
+            }
+            catch
+            {
+                Log.Error("Ошибка записи пакета пользователю {0}", tc.id);
+            }
         }
 
         public static byte[] Reverse(this byte[] tc)
@@ -37,7 +45,7 @@ namespace Minecraft_Server
             byte[] data = UnicodeEncoding.ASCII.GetBytes(n.ToCharArray());
             tc.write.Write(data, 0, data.Length);
             for (int i = 0; i < 64 - data.Length; i++)
-                tc.write.Write(32);
+                tc.write.Write((byte)32);
         }
         public static void Write(this TcpClientm tc, byte n)
         {
@@ -99,15 +107,9 @@ namespace Minecraft_Server
             tc.write.Write(data, 0, data.Length);
         }
 
-        public static string ReadString(this NetworkStream reader, TcpClientm tc, short len)
+        public static string ReadString(this NetworkStream reader, TcpClientm tc)
         {
-            string s = "";
-            for (int i = 0; i < len; i++)
-            {
-                byte[] b = reader.ReadBytes(tc, 2);
-                s += UnicodeEncoding.BigEndianUnicode.GetChars(b)[0];
-            }
-            return s;
+            return new string(UnicodeEncoding.ASCII.GetChars(reader.ReadBytes(tc, 64))).TrimEnd();
         }
 
         public static byte ReadByte(this NetworkStream reader, TcpClientm tc)

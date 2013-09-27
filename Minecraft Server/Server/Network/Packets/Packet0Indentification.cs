@@ -23,8 +23,8 @@ namespace Minecraft_Server.Server.Network.Packets
         public static void Read(TcpClientm d)
         {
             byte pv = d.NetStream.ReadByte(d);
-            string str = new string(UnicodeEncoding.ASCII.GetChars(d.NetStream.ReadBytes(d, 64)));
-            string vk = new string(UnicodeEncoding.ASCII.GetChars(d.NetStream.ReadBytes(d, 64)));
+            string str = d.NetStream.ReadString(d);
+            string vk = d.NetStream.ReadString(d);
             d.NetStream.ReadByte(d);
             d.cli.onJoin(pv,str,vk);
         }

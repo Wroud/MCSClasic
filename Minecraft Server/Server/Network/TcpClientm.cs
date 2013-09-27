@@ -11,8 +11,6 @@ namespace Minecraft_Server.Server.Network
 {
     class TcpClientm:Framework.Network.TcpClientm
     {
-        public byte[] token;
-        public byte[] SharedKey;
         public Client.Client cli;
 
         new public static TcpClientm Get(TcpClient t, ushort i)

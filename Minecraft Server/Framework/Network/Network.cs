@@ -54,7 +54,7 @@ namespace Minecraft_Server.Framework.Network
         }
         #endregion
         private TcpListener Socket;
-        private Dictionary<ushort, TcpClientm> connects;
+        public Dictionary<ushort, TcpClientm> connects;
         public delegate void Read(Server.Network.TcpClientm data);
         public ConcurrentQueue<Packet> messageQueue;
         public Dictionary<byte, Read> packets;
@@ -123,7 +123,7 @@ namespace Minecraft_Server.Framework.Network
             {
                 ushort[] ids = this.connects.Keys.ToArray<ushort>();
                 for (ushort i = 0; i < 65535; i++)
-                    if (ids.Contains(i))
+                    if (!ids.Contains(i))
                         return i;
                 return 0;
             }
