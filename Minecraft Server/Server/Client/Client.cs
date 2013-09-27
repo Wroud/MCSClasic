@@ -36,7 +36,9 @@ namespace Minecraft_Server.Server.Client
         {
             foreach (var us in Network.Network.net.connects.Values)
                 if (us.id != Net.id)
-                    new Packet6SetBlock((Minecraft_Server.Server.Network.TcpClientm)us, x, y, z, (mod == (byte)0) ? (byte)0 : type);
+                {
+                    new Packet6SetBlock((Minecraft_Server.Server.Network.TcpClientm)us, x, y, z, (mod == 0) ? (byte)0 : type).Write();
+                }
         }
 
         public void onPosition(short x, short y, short z, byte yaw, byte pitch)
@@ -76,7 +78,7 @@ namespace Minecraft_Server.Server.Client
             Thread.Sleep(10);
             new Packet4LevelFin(this.Net, 64, 64, 64).Write();
             Thread.Sleep(10);
-            new Packet7Spawn(this.Net, (sbyte)-1, username, 32, 32, 32, 0, 0).Write();
+            new Packet7Spawn(this.Net, (sbyte)-1, username, 64, 64, 64, 0, 0).Write();
 
             foreach (var us in Network.Network.net.connects.Values)
                 if (us.id != Net.id)
