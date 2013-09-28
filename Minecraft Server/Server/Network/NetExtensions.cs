@@ -32,7 +32,7 @@ namespace Minecraft_Server
         public static byte[] Reverse(this byte[] tc)
         {
             byte[] n = new byte[tc.Length];
-            int pos = tc.Length-1;
+            int pos = tc.Length - 1;
             foreach (byte b in tc)
             {
                 n[pos] = b;
@@ -117,7 +117,7 @@ namespace Minecraft_Server
         {
             byte[] b = new byte[1];
             reader.Read(b, 0, 1);
-                return b[0];
+            return b[0];
         }
 
         public static byte[] ReadBytes(this NetworkStream reader, TcpClientm tc, int count)
@@ -212,7 +212,7 @@ namespace Minecraft_Server
         {
             byte[] b = new byte[6];
             st.Read(b, 0, 6);
-            short x = BitConverter.ToInt16(new byte[]{b[1],b[0]}, 0);
+            short x = BitConverter.ToInt16(new byte[] { b[1], b[0] }, 0);
             short y = BitConverter.ToInt16(new byte[] { b[3], b[2] }, 0);
             short z = BitConverter.ToInt16(new byte[] { b[5], b[4] }, 0);
             return new Vector3(x, y, z);
