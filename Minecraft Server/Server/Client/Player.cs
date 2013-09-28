@@ -14,8 +14,7 @@ namespace Minecraft_Server.Server.Client
         public string level;
         public Vector2 Rotation;
         public Vector3 Position;
-        public Vector3 SpawnPoint;
-        public GameMode Mode;
+        public byte isop = 0;//0x64
 
         public Player(string name)
         {

@@ -31,13 +31,13 @@ namespace Minecraft_Server.Server.Client
             World.worlds[Main.Main.players[this.Net.id].level][pos] = (mod == 0) ? (byte)0 : type;
             foreach (var us in Network.Network.net.connects.Values)
                 if (us.id != Net.id
-                    && Main.Main.players[((Minecraft_Server.Server.Network.TcpClientm)us).id].level == Main.Main.players[this.Net.id].level)
+                    && Main.Main.players[us.id].level == Main.Main.players[this.Net.id].level)
                 {
-                    new Packet6SetBlock((Minecraft_Server.Server.Network.TcpClientm)us, pos, (mod == 0) ? (byte)0 : type).Write();
+                    new Packet6SetBlock((Server.Network.TcpClientm)us, pos, (mod == 0) ? (byte)0 : type).Write();
                 }
         }
 
-        public void onPosition(Vector3 pos,Vector2 rot)
+        public void onPosition(Vector3 pos, Vector2 rot)
         {
             Main.Main.players[this.Net.id].Position = pos;
             Main.Main.players[this.Net.id].Rotation = rot;
@@ -47,7 +47,7 @@ namespace Minecraft_Server.Server.Client
         {
             mes = "[&a" + Main.Main.players[this.Net.id].username + "&f]: " + mes;
             foreach (var us in Network.Network.net.connects.Values)
-                new Packet13Message((Minecraft_Server.Server.Network.TcpClientm)us, (sbyte)this.Net.id, mes).Write();
+                new Packet13Message((Server.Network.TcpClientm)us, (sbyte)this.Net.id, mes).Write();
         }
 
         public void onPing(byte s, string name)
@@ -83,10 +83,10 @@ namespace Minecraft_Server.Server.Client
             new Packet7Spawn(this.Net, (sbyte)-1, Main.Main.players[this.Net.id].username, World.worlds[Main.Main.players[this.Net.id].level].spawn, new Vector2()).Write();
 
             foreach (var us in Network.Network.net.connects.Values)
-                if (us.id != Net.id && Main.Main.players[((Minecraft_Server.Server.Network.TcpClientm)us).id].level == Main.Main.players[this.Net.id].level)
+                if (us.id != Net.id && Main.Main.players[us.id].level == Main.Main.players[this.Net.id].level)
                 {
-                    new Packet7Spawn(Net, (sbyte)us.id, Main.Main.players[((Minecraft_Server.Server.Network.TcpClientm)us).id].username, Main.Main.players[((Minecraft_Server.Server.Network.TcpClientm)us).id].Position, Main.Main.players[((Minecraft_Server.Server.Network.TcpClientm)us).id].Rotation).Write();
-                    new Packet7Spawn((Minecraft_Server.Server.Network.TcpClientm)us, (sbyte)Net.id, Main.Main.players[this.Net.id].username, World.worlds[Main.Main.players[this.Net.id].level].spawn, new Vector2()).Write();
+                    new Packet7Spawn(Net, (sbyte)us.id, Main.Main.players[us.id].username, Main.Main.players[us.id].Position, Main.Main.players[us.id].Rotation).Write();
+                    new Packet7Spawn((Server.Network.TcpClientm)us, (sbyte)Net.id, Main.Main.players[this.Net.id].username, World.worlds[Main.Main.players[this.Net.id].level].spawn, new Vector2()).Write();
                 }
         }
 

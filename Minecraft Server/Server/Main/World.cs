@@ -44,6 +44,8 @@ namespace Minecraft_Server.Server.Main
             this.size = s;
             this.mpf = f;
 
+            if (!Directory.Exists("Worlds\\"))
+                Directory.CreateDirectory("Worlds\\");
             if (File.Exists(f + ".btm"))
                 this.Load();
             else
@@ -63,7 +65,7 @@ namespace Minecraft_Server.Server.Main
         public void Load()
         {
             Log.Info("Загрузка карты {0}", this.mpf);
-            Stream st = File.OpenRead("Worlds/"+this.mpf + ".btm");
+            Stream st = File.OpenRead("Worlds\\"+this.mpf + ".btm");
             using (GZipStream read = new GZipStream(st, CompressionMode.Decompress))
             {
                 byte[] l = new byte[4];
@@ -83,7 +85,7 @@ namespace Minecraft_Server.Server.Main
         public void Save()
         {
             Log.Info("Сохранение карты {0}", this.mpf);
-            Stream st = File.Create("Worlds/" + this.mpf + ".btm");
+            Stream st = File.Create("Worlds\\" + this.mpf + ".btm");
             using (GZipStream wri = new GZipStream(st, CompressionMode.Compress))
             {
                 wri.Write(this.size);

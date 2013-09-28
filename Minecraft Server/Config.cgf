@@ -1,0 +1,11 @@
+generator-settings=Nothing
+level-name=world
+server-name=A Minecraft Server
+server-port=25565
+level-seed=22
+server-ip=127.0.0.1
+white-list=true
+gamemode=0
+max-players=20
+motd=DaunDaun
+salt=fhddfhdfhdfhdfh
