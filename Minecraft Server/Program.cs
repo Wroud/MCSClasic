@@ -8,6 +8,7 @@ using Minecraft_Server.Server.Main;
 using Minecraft_Server.Server.Network;
 using Minecraft_Server.Framework.Util;
 using System.Threading;
+using Minecraft_Server.Server.Util;
 
 namespace Minecraft_Server
 {
@@ -23,13 +24,15 @@ namespace Minecraft_Server
             while (!Network.Init && !Server.Main.Main.Init)
             {
                 Thread.Sleep(700);
-                Log.Update("Инициализация",".");
+                Log.Update("Инициализация", ".");
             }
             Network.Run();
             Log.Info("Сервер запущен");
             HeartBeats.Start();
             while (true)
-                Thread.Sleep(700);
+                if (Console.ReadLine() == "/save")
+                    foreach (var v in World.worlds.Values)
+                        v.Save();
         }
     }
 }

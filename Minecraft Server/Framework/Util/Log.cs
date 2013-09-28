@@ -69,8 +69,9 @@ namespace Minecraft_Server.Framework.Util
             Display(new LogMessage("ERROR", mes, ConsoleColor.DarkRed, ConsoleColor.Red));
         }
 
-        public static void Update(string message, string p = "", int c = 3)
+        public static void Update(string message, string p = "", int c = 3, params object[] args)
         {
+            message = args.Length > 0 ? string.Format(message, args) : message.ToString();
             if (p != "")
                 message += Points(p,c);
             Console.SetCursorPosition(0, Console.CursorTop - 1);
@@ -104,7 +105,9 @@ namespace Minecraft_Server.Framework.Util
         {
                 writeTimePrefix();
                 writeTypePrefix(message.LogType, message.BGColor, message.FGColor);
-                Console.WriteLine(message.Message+"                              ");
+                for (int i = 0; i < 40 - message.Message.Length; i++)
+                    message.Message += " ";
+                Console.WriteLine(message.Message);
         }
     }
 }

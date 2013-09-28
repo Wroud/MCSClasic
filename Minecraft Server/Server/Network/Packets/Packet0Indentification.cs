@@ -1,4 +1,5 @@
 ﻿using Minecraft_Server.Framework.Network;
+using Minecraft_Server.Server.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,8 +34,8 @@ namespace Minecraft_Server.Server.Network.Packets
         {
             this.data.Write(opcode);
             this.data.Write(protocolVersion);
-            this.data.Write(ServerConf.Config.server_name);
-            this.data.Write(ServerConf.Config.motd);
+            this.data.Write(Config.server_name);
+            this.data.Write(Config.motd);
             this.data.Write(usertype);
             this.data.Flush();
         }

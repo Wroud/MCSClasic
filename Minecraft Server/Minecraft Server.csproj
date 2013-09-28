@@ -66,6 +66,7 @@
     <Compile Include="Framework\Util\Log.cs" />
     <Compile Include="Framework\Util\PermissionsConf.cs" />
     <Compile Include="Framework\Util\Utils.cs" />
+    <Compile Include="Server\Main\World.cs" />
     <Compile Include="Server\Network\HeartBeats.cs" />
     <Compile Include="Server\Network\Packets\Packet13Message.cs" />
     <Compile Include="Server\Network\Packets\Packet8Position.cs" />
@@ -78,7 +79,8 @@
     <Compile Include="Server\Network\Packets\Server\Packet4LevelFin.cs" />
     <Compile Include="Server\Network\Packets\Server\Packet7Spawn.cs" />
     <Compile Include="Server\Utils\PlayerEnums.cs" />
-    <Compile Include="Framework\Util\ServerConf.cs" />
+    <Compile Include="Server\Main\Config.cs" />
+    <Compile Include="Server\Utils\ServerConf.cs" />
     <Compile Include="Server\Utils\Vector3.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

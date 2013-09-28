@@ -1,5 +1,7 @@
 ﻿using Minecraft_Server.Framework.Network;
+using Minecraft_Server.Server.Main;
 using Minecraft_Server.Server.Network.Packets;
+using Minecraft_Server.Server.Util;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,11 +21,13 @@ namespace Minecraft_Server.Server.Client
         public string verfikey;
         public short x, y, z;
         public byte yaw, pitch;
+        public string level;
 
         public Client(Network.TcpClientm Net)
             : base(Net)
         {
             this.Net = Net;
+            this.level = Config.level_name;
         }
 
         public void onConnect()
@@ -34,8 +38,9 @@ namespace Minecraft_Server.Server.Client
 
         public void onCBlock(short x, short y, short z, byte mod, byte type)
         {
+            World.worlds[level][x, y, z] = (mod == 0) ? (byte)0 : type;
             foreach (var us in Network.Network.net.connects.Values)
-                if (us.id != Net.id)
+                if (us.id != Net.id && ((Minecraft_Server.Server.Network.TcpClientm)us).cli.level == level)
                 {
                     new Packet6SetBlock((Minecraft_Server.Server.Network.TcpClientm)us, x, y, z, (mod == 0) ? (byte)0 : type).Write();
                 }
@@ -54,7 +59,7 @@ namespace Minecraft_Server.Server.Client
         {
             mes = "[&a" + username + "&f]: " + mes;
             foreach (var us in Network.Network.net.connects.Values)
-                    new Packet13Message((Minecraft_Server.Server.Network.TcpClientm)us, (sbyte)this.Net.id, mes).Write();
+                new Packet13Message((Minecraft_Server.Server.Network.TcpClientm)us, (sbyte)this.Net.id, mes).Write();
         }
 
         public void onPing(byte s, string name)
@@ -73,18 +78,26 @@ namespace Minecraft_Server.Server.Client
             new Packet2Level(this.Net).Write();
             Thread.Sleep(10);
             byte[] da = new byte[1024];
-            Array.Copy(Main.Main.olda, 0, da, 0, Main.Main.olda.Length);
-            new Packet3Chunk(this.Net, da, 100).Write();
+            byte[] gz = World.worlds[level].GetGzipMap();
+            for (int point = 0; point < gz.Length; )
+            {
+                if (point + 1024 < gz.Length)
+                    Array.Copy(gz, point, da, 0, 1024);
+                else
+                    Array.Copy(gz, point, da, 0, gz.Length - point);
+                new Packet3Chunk(this.Net, da, (byte)(point / gz.Length * 100)).Write();
+                Thread.Sleep(10);
+                point += 1024;
+            }
+            new Packet4LevelFin(this.Net, (short)World.worlds[level].sx, (short)World.worlds[level].sy, (short)World.worlds[level].sz).Write();
             Thread.Sleep(10);
-            new Packet4LevelFin(this.Net, 64, 64, 64).Write();
-            Thread.Sleep(10);
-            new Packet7Spawn(this.Net, (sbyte)-1, username, 64, 64, 64, 0, 0).Write();
+            new Packet7Spawn(this.Net, (sbyte)-1, username, World.worlds[level].stx, World.worlds[level].sty, World.worlds[level].stz, 0, 0).Write();
 
             foreach (var us in Network.Network.net.connects.Values)
-                if (us.id != Net.id)
+                if (us.id != Net.id && ((Minecraft_Server.Server.Network.TcpClientm)us).cli.level == level)
                 {
                     new Packet7Spawn(Net, (sbyte)us.id, ((Minecraft_Server.Server.Network.TcpClientm)us).cli.username, ((Minecraft_Server.Server.Network.TcpClientm)us).cli.x, ((Minecraft_Server.Server.Network.TcpClientm)us).cli.y, ((Minecraft_Server.Server.Network.TcpClientm)us).cli.z, ((Minecraft_Server.Server.Network.TcpClientm)us).cli.yaw, ((Minecraft_Server.Server.Network.TcpClientm)us).cli.pitch).Write();
-                    new Packet7Spawn((Minecraft_Server.Server.Network.TcpClientm)us, (sbyte)Net.id, username, 64, 64, 64, 0, 0).Write();
+                    new Packet7Spawn((Minecraft_Server.Server.Network.TcpClientm)us, (sbyte)Net.id, username, World.worlds[level].stx, World.worlds[level].sty, World.worlds[level].stz, 0, 0).Write();
                 }
         }
 
