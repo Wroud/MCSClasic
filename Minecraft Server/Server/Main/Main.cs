@@ -30,7 +30,7 @@ namespace Minecraft_Server.Server.Main
                 foreach (var con in Network.Network.net.connects.Values)
                     foreach (var us in Network.Network.net.connects.Values)
                         if (us.id != con.id)
-                            new Packet8Position((TcpClientm)con, (sbyte)us.id, ((TcpClientm)us).cli.x, ((TcpClientm)us).cli.y, ((TcpClientm)us).cli.z, ((TcpClientm)us).cli.yaw, ((TcpClientm)us).cli.pitch).Write();
+                            new Packet8Position((TcpClientm)con, (sbyte)us.id, ((TcpClientm)us).cli.player.Position, ((TcpClientm)us).cli.player.Rotation).Write();
                 Thread.Sleep(20);
             }
         }

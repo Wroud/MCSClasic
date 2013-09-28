@@ -1,4 +1,5 @@
 ﻿using Minecraft_Server.Framework.Network;
+using Minecraft_Server.Server.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,14 +11,12 @@ namespace Minecraft_Server.Server.Network.Packets
     class Packet4LevelFin : Framework.Network.Packet
     {
         private byte opcode = 4;
-        private short x, y, z;
+        private Vector3 size;
 
-        public Packet4LevelFin(TcpClientm d, short x, short y, short z)
+        public Packet4LevelFin(TcpClientm d, Vector3 size)
         {
             this.data = d;
-            this.x = x;
-            this.y = y;
-            this.z = z;
+            this.size = size;
         }
 
         public static void Read(TcpClientm d)
@@ -25,10 +24,8 @@ namespace Minecraft_Server.Server.Network.Packets
         }
         public override void Write()
         {
-            this.data.Write(opcode);
-            this.data.Write(x);
-            this.data.Write(y);
-            this.data.Write(z);
+            this.data.Write(this.opcode);
+            this.data.Write(this.size);
             this.data.Flush();
         }
     }

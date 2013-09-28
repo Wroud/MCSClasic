@@ -1,4 +1,5 @@
 ﻿using Minecraft_Server.Framework.Network;
+using Minecraft_Server.Server.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,15 +11,13 @@ namespace Minecraft_Server.Server.Network.Packets
     class Packet6SetBlock : Framework.Network.Packet
     {
         private byte opcode = 6;
-        private short x,y,z;
+        private Vector3 pos;
         private byte Blocktype;
 
-        public Packet6SetBlock(TcpClientm d, short x, short y, short z,byte Blocktype)
+        public Packet6SetBlock(TcpClientm d, Vector3 pos,byte Blocktype)
         {
             this.data = d;
-            this.x = x;
-            this.y = y;
-            this.z = z;
+            this.pos = pos;
             this.Blocktype = Blocktype;
         }
 
@@ -28,9 +27,7 @@ namespace Minecraft_Server.Server.Network.Packets
         public override void Write()
         {
             this.data.Write(opcode);
-            this.data.Write(x);
-            this.data.Write(y);
-            this.data.Write(z);
+            this.data.Write(pos);
             this.data.Write(Blocktype);
             this.data.Flush();
         }

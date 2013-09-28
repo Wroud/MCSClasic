@@ -28,11 +28,11 @@ namespace Minecraft_Server.Server.Network
                 http.DownloadData("https://minecraft.net/heartbeat.jsp" 
                     + "?port=" + Config.server_port 
                     + "&max=" + Config.max_players 
-                    + "&name=" + Config.motd 
+                    + "&name=" + Config.server_name 
                     + "&public=" + Config.white_list 
                     + "&version=7" 
-                    + "&salt=" + Config.Salt 
-                    + "&users=0");
+                    + "&salt=" + Config.Salt
+                    + "&users=" + Framework.Network.Network.net.connects.Count);
                 Thread.Sleep(45000);
             }
         }

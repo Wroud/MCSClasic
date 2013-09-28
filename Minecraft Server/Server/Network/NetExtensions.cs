@@ -1,5 +1,6 @@
 ﻿using Minecraft_Server.Framework.Network;
 using Minecraft_Server.Framework.Util;
+using Minecraft_Server.Server.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -151,6 +152,70 @@ namespace Minecraft_Server
             reader.Read(b, 0, count);
             b = b.Reverse();
             return BitConverter.ToInt64(b, 0);
+        }
+
+
+
+
+        public static void Write(this TcpClientm st, Vector3 v)
+        {
+            st.Write(v.X);
+            st.Write(v.Y);
+            st.Write(v.Z);
+        }
+        public static void Write(this TcpClientm st, Vector2 v)
+        {
+            st.write.Write(new byte[] { v.X, v.Y }, 0, 2);
+        }
+
+
+
+
+
+        public static void Write(this Stream st, Vector2 v)
+        {
+            st.Write(new byte[] { v.X, v.Y }, 0, 2);
+        }
+        public static Vector2 ReadVector2(this Stream st)
+        {
+            byte[] b = new byte[2];
+            st.Read(b, 0, 2);
+            return new Vector2(b[0], b[1]);
+        }
+
+
+
+
+
+        public static void Write(this Stream st, Vector3 v)
+        {
+            byte[] d1 = new[]
+            {
+                (byte)((v.X & 0xFF00) >> 8),
+                (byte)(v.X & 0xFF)
+            };
+            byte[] d2 = new[]
+            {
+                (byte)((v.Y & 0xFF00) >> 8),
+                (byte)(v.Y & 0xFF)
+            };
+            byte[] d3 = new[]
+            {
+                (byte)((v.Z & 0xFF00) >> 8),
+                (byte)(v.Z & 0xFF)
+            };
+            st.Write(d1, 0, 2);
+            st.Write(d2, 0, 2);
+            st.Write(d3, 0, 2);
+        }
+        public static Vector3 ReadVector3(this Stream st)
+        {
+            byte[] b = new byte[6];
+            st.Read(b, 0, 6);
+            short x = BitConverter.ToInt16(new byte[]{b[1],b[0]}, 0);
+            short y = BitConverter.ToInt16(new byte[] { b[3], b[2] }, 0);
+            short z = BitConverter.ToInt16(new byte[] { b[5], b[4] }, 0);
+            return new Vector3(x, y, z);
         }
     }
 }

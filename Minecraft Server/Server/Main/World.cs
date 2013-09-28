@@ -7,6 +7,7 @@ using System.IO.Compression;
 using System.IO;
 using Minecraft_Server.Framework.Util;
 using Minecraft_Server.Server.Util;
+using Minecraft_Server.Server.Utils;
 
 namespace Minecraft_Server.Server.Main
 {
@@ -27,15 +28,20 @@ namespace Minecraft_Server.Server.Main
             get { return this.memory[this.Index(x, y, z)]; }
             set { this.memory[this.Index(x, y, z)] = value; }
         }
-        public short sx, sy, sz;
-        public short stx, sty, stz;
+        public byte this[Vector3 pos]
+        {
+            get { return this.memory[this.Index(pos)]; }
+            set { this.memory[this.Index(pos)] = value; }
+        }
+        public Vector3 size;
+        public Vector3 spawn;
         public string mpf;
 
-        public World(string f, short x = 256, short y = 4, short z = 256)
+        public World(string f, Vector3 s = null)
         {
-            this.sx = x;
-            this.sy = y;
-            this.sz = z;
+            if (s == null) 
+                s = new Vector3(256, 4, 256);
+            this.size = s;
             this.mpf = f;
 
             if (File.Exists(f + ".btm"))
@@ -46,12 +52,10 @@ namespace Minecraft_Server.Server.Main
 
         public void Generate()
         {
-            this.stx = 15 * 32;
-            this.stz = 15 * 32;
-            this.sty = 1 * 32 + 51;
-            this.memory = new byte[sx * sy * sz];
-            for (int x = 0; x < sx; x++)
-                for (int z = 0; z < sz; z++)
+            this.spawn = new Vector3(15 * 32, 1 * 32 + 51, 15 * 32);
+            this.memory = new byte[this.size.X * this.size.Y * this.size.Z];
+            for (int x = 0; x < this.size.X; x++)
+                for (int z = 0; z < this.size.Z; z++)
                     this.memory[this.Index(x, 0, z)] = 1;
             this.Save();
         }
@@ -64,18 +68,8 @@ namespace Minecraft_Server.Server.Main
             {
                 byte[] l = new byte[4];
 
-                read.Read(l, 0, 2);
-                this.sx = BitConverter.ToInt16(l, 0);
-                read.Read(l, 0, 2);
-                this.sy = BitConverter.ToInt16(l, 0);
-                read.Read(l, 0, 2);
-                this.sz = BitConverter.ToInt16(l, 0);
-                read.Read(l, 0, 2);
-                this.stx = BitConverter.ToInt16(l, 0);
-                read.Read(l, 0, 2);
-                this.sty = BitConverter.ToInt16(l, 0);
-                read.Read(l, 0, 2);
-                this.stz = BitConverter.ToInt16(l, 0);
+                this.size = ((Stream)read).ReadVector3();
+                this.spawn = read.ReadVector3();
 
                 read.Read(l, 0, 4);
                 int len = BitConverter.ToInt32(l, 0);
@@ -92,12 +86,8 @@ namespace Minecraft_Server.Server.Main
             Stream st = File.Create(this.mpf + ".btm");
             using (GZipStream wri = new GZipStream(st, CompressionMode.Compress))
             {
-                wri.Write(BitConverter.GetBytes(this.sx), 0, 2);
-                wri.Write(BitConverter.GetBytes(this.sy), 0, 2);
-                wri.Write(BitConverter.GetBytes(this.sz), 0, 2);
-                wri.Write(BitConverter.GetBytes(this.stx), 0, 2);
-                wri.Write(BitConverter.GetBytes(this.sty), 0, 2);
-                wri.Write(BitConverter.GetBytes(this.stz), 0, 2);
+                wri.Write(this.size);
+                wri.Write(this.spawn);
                 wri.Write(BitConverter.GetBytes(this.memory.Length), 0, 4);
                 wri.Write(this.memory, 0, this.memory.Length);
             }
@@ -126,7 +116,12 @@ namespace Minecraft_Server.Server.Main
 
         public int Index(int x, int y, int z)
         {
-            return (y * this.sz + z) * this.sx + x;
+            return (y * this.size.Z + z) * this.size.X + x;
+        }
+
+        public int Index(Vector3 pos)
+        {
+            return (pos.Y * this.size.Z + pos.Z) * this.size.X + pos.X;
         }
 
     }

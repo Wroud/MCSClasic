@@ -1,4 +1,5 @@
 ﻿using Minecraft_Server.Framework.Network;
+using Minecraft_Server.Server.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +14,10 @@ namespace Minecraft_Server.Server.Network.Packets
 
         public static void Read(TcpClientm d)
         {
-            short x = d.NetStream.ReadInt16(d);
-            short y = d.NetStream.ReadInt16(d);
-            short z = d.NetStream.ReadInt16(d);
+            Vector3 pos = d.NetStream.ReadVector3();
             byte mode = d.NetStream.ReadByte(d);
             byte type = d.NetStream.ReadByte(d);
-            d.cli.onCBlock(x, y, z, mode, type);
+            d.cli.onCBlock(pos, mode, type);
         }
         public override void Write()
         {

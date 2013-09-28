@@ -1,4 +1,5 @@
 ﻿using Minecraft_Server.Framework.Network;
+using Minecraft_Server.Server.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,19 +13,16 @@ namespace Minecraft_Server.Server.Network.Packets
         private byte opcode = 7;
         private sbyte id;
         private string name;
-        private short x, y, z;
-        private byte yaw, pith;
+        private Vector3 pos;
+        private Vector2 rot;
 
-        public Packet7Spawn(TcpClientm d, sbyte id, string name, short x, short y, short z, byte yaw, byte pith)
+        public Packet7Spawn(TcpClientm d, sbyte id, string name, Vector3 pos, Vector2 rot)
         {
             this.data = d;
             this.id = id;
             this.name = name;
-            this.x = x;
-            this.y = y;
-            this.z = z;
-            this.yaw = yaw;
-            this.pith = pith;
+            this.pos = pos;
+            this.rot = rot;
         }
 
         public static void Read(TcpClientm d)
@@ -35,11 +33,8 @@ namespace Minecraft_Server.Server.Network.Packets
             this.data.Write(opcode);
             this.data.Write(id);
             this.data.Write(name);
-            this.data.Write(x);
-            this.data.Write(y);
-            this.data.Write(z);
-            this.data.Write(yaw);
-            this.data.Write(pith);
+            this.data.Write(pos);
+            this.data.Write(rot);
             this.data.Flush();
         }
     }

@@ -91,6 +91,7 @@
     <Compile Include="Server\Network\Network.cs" />
     <Compile Include="Server\Network\Packets\Packet.cs" />
     <Compile Include="Server\Network\TcpClientm.cs" />
+    <Compile Include="Server\Utils\Vector2.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

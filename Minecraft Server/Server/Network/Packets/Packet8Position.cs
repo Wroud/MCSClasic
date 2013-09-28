@@ -1,4 +1,5 @@
 ﻿using Minecraft_Server.Framework.Network;
+using Minecraft_Server.Server.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,39 +12,30 @@ namespace Minecraft_Server.Server.Network.Packets
     {
         private byte opcode = 8;
         private sbyte id;
-        private short x, y, z;
-        private byte yaw, pith;
+        private Vector3 pos;
+        private Vector2 rot;
 
-        public Packet8Position(TcpClientm d,sbyte id, short x, short y, short z, byte yaw, byte pith)
+        public Packet8Position(TcpClientm d, sbyte id, Vector3 pos, Vector2 rot)
         {
             this.data = d;
             this.id = id;
-            this.x = x;
-            this.y = y;
-            this.z = z;
-            this.yaw = yaw;
-            this.pith = pith;
+            this.pos = pos;
+            this.rot = rot;
         }
 
         public static void Read(TcpClientm d)
         {
             d.NetStream.ReadByte(d);
-            short x = d.NetStream.ReadInt16(d);
-            short y = d.NetStream.ReadInt16(d);
-            short z = d.NetStream.ReadInt16(d);
-            byte yaw = d.NetStream.ReadByte(d);
-            byte pith = d.NetStream.ReadByte(d);
-            d.cli.onPosition(x, y, z, yaw, pith);
+            Vector3 pos = d.NetStream.ReadVector3();
+            Vector2 rot = d.NetStream.ReadVector2();
+            d.cli.onPosition(pos,rot);
         }
         public override void Write()
         {
             this.data.Write(opcode);
             this.data.Write(id);
-            this.data.Write(x);
-            this.data.Write(y);
-            this.data.Write(z);
-            this.data.Write(yaw);
-            this.data.Write(pith);
+            this.data.Write(pos);
+            this.data.Write(rot);
             this.data.Flush();
         }
     }

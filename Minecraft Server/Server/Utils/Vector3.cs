@@ -1,27 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Minecraft_Server.Server.Utils
 {
-    class Vector3
+    public class Vector3
     {
-        public double X;
-        public double Y;
-        public double Z;
+        public short X;
+        public short Y;
+        public short Z;
         public Vector3()
         {
             this.X = 0;
             this.Y = 0;
             this.Z = 0;
         }
-        public Vector3(double x, double y, double z)
+        public Vector3(short x, short y, short z)
         {
             this.X = x;
             this.Y = y;
             this.Z = z;
+        }
+        public short Mnog
+        {
+            get { return (short)(this.X * this.Y * this.Z); }
         }
         public static Vector3 operator +(Vector3 one, Vector3 two)
         {
@@ -37,14 +43,14 @@ namespace Minecraft_Server.Server.Utils
             one.Z -= two.Z;
             return one;
         }
-        public static Vector3 operator *(Vector3 one, double two)
+        public static Vector3 operator *(Vector3 one, short two)
         {
             one.X *=two;
             one.Y *= two;
             one.Z *= two;
             return one;
         }
-        public static Vector3 operator /(Vector3 one, double two)
+        public static Vector3 operator /(Vector3 one, short two)
         {
             one.X /= two;
             one.Y /= two;
