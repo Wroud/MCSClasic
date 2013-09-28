@@ -18,10 +18,10 @@ namespace Minecraft_Server.Server.Main
     class Main : Framework.Main.Main
     {
         public static Thread users;
-        public static Dictionary<ushort,Player> players;
+        //public static Dictionary<ushort,Player> players;
         new public static void Initz()
         {
-            players = new Dictionary<ushort, Player>();
+            //players = new Dictionary<ushort, Player>();
             World.Initialize();
 
             users = new Thread(Users);
@@ -31,10 +31,14 @@ namespace Minecraft_Server.Server.Main
         {
             while (true)
             {
-                foreach (var con in Network.Network.net.connects.Values)
-                    foreach (var us in Network.Network.net.connects.Values)
-                        if (us.id != con.id)
-                            new Packet8Position((TcpClientm)con, (sbyte)us.id, players[us.id].Position, players[us.id].Rotation).Write();
+                try
+                {
+                    foreach (var con in Network.Network.net.connects.Values)
+                        foreach (var us in Network.Network.net.connects.Values)
+                            if (us.id != con.id)
+                                new Packet8Position((TcpClientm)con, (sbyte)us.id, ((Server.Network.TcpClientm)us).cli.Position, ((Server.Network.TcpClientm)us).cli.Rotation).Write();
+                }
+                catch { }
                 Thread.Sleep(20);
             }
         }

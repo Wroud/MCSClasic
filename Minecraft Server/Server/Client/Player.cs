@@ -2,6 +2,7 @@
 using Minecraft_Server.Server.Utils;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,7 +27,7 @@ namespace Minecraft_Server.Server.Client
 
         public void Save()
         {
-
+            Stream st = File.Create(username);
         }
 
         public void Load()

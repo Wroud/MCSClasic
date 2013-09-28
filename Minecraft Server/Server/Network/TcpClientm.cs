@@ -28,7 +28,7 @@ namespace Minecraft_Server.Server.Network
         {
             Network.GetPacket(o).Invoke(this);
         }
-        public void Close()
+        public override void Close()
         {
             base.Close();
             if (this.cli != null)

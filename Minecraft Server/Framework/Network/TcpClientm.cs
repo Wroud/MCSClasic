@@ -47,7 +47,7 @@ namespace Minecraft_Server.Framework.Network
             this.opcode = new byte[1];
             this.NetStream.BeginRead(this.opcode, 0, 1, this.AcceptPacket, null);
         }
-        public void Close()
+        public virtual void Close()
         {
             if (this.tcp != null)
                 this.tcp.Close();

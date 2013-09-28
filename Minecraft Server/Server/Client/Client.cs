@@ -17,6 +17,12 @@ namespace Minecraft_Server.Server.Client
     class Client : Framework.Client.Client
     {
 
+        public string username;
+        public string level;
+        public Vector2 Rotation;
+        public Vector3 Position;
+        public byte isop = 0;//0x64
+
         private Network.TcpClientm Net;
         public string verfikey;
 
@@ -26,12 +32,39 @@ namespace Minecraft_Server.Server.Client
             this.Net = Net;
         }
 
+        public override void Close()
+        {
+            if (!Directory.Exists("Players\\"))
+                Directory.CreateDirectory("Players\\");
+            Stream st = File.Create("Players\\" + username);
+            using (BinaryWriter bi = new BinaryWriter(st))
+            {
+                bi.Write(level);
+                bi.Write(Rotation);
+                bi.Write(Position);
+            }
+        }
+
+        public void Load()
+        {
+            if (Directory.Exists("Players\\") && File.Exists("Players\\" + username))
+            {
+                Stream st = File.OpenRead("Players\\" + username);
+                using (BinaryReader bi = new BinaryReader(st))
+                {
+                    level = bi.ReadString();
+                    Rotation = bi.ReadVector2();
+                    Position = bi.ReadVector3();
+                }
+            }
+        }
+
         public void onCBlock(Vector3 pos, byte mod, byte type)
         {
-            World.worlds[Main.Main.players[this.Net.id].level][pos] = (mod == 0) ? (byte)0 : type;
+            World.worlds[level][pos] = (mod == 0) ? (byte)0 : type;
             foreach (var us in Network.Network.net.connects.Values)
                 if (us.id != Net.id
-                    && Main.Main.players[us.id].level == Main.Main.players[this.Net.id].level)
+                    && ((Server.Network.TcpClientm)us).cli.level == level)
                 {
                     new Packet6SetBlock((Server.Network.TcpClientm)us, pos, (mod == 0) ? (byte)0 : type).Write();
                 }
@@ -39,13 +72,13 @@ namespace Minecraft_Server.Server.Client
 
         public void onPosition(Vector3 pos, Vector2 rot)
         {
-            Main.Main.players[this.Net.id].Position = pos;
-            Main.Main.players[this.Net.id].Rotation = rot;
+            Position = pos;
+            Rotation = rot;
         }
 
         public void onMessage(byte color, string mes)
         {
-            mes = "[&a" + Main.Main.players[this.Net.id].username + "&f]: " + mes;
+            mes = "[&a" + username + "&f]: " + mes;
             foreach (var us in Network.Network.net.connects.Values)
                 new Packet13Message((Server.Network.TcpClientm)us, (sbyte)this.Net.id, mes).Write();
         }
@@ -59,15 +92,20 @@ namespace Minecraft_Server.Server.Client
             if (protocolVersion != 7)
                 new PacketKick(this.Net, "Bad protocol version").Write();
 
-            Main.Main.players.Add(this.Net.id, new Player(name));
+            this.level = Config.level_name;
+            this.username = name;
+            this.Rotation = new Vector2();
+            this.Position = World.worlds[level].spawn;
+            Load();
+            //Main.Main.players.Add(this.Net.id, new Player(name));
             this.verfikey = vk;
 
-            new Packet0Indentification(this.Net, protocolVersion, 0);//0x64 будет оп
+            new Packet0Indentification(this.Net, protocolVersion, 0x64);//0x64 будет оп
             Thread.Sleep(10);
             new Packet2Level(this.Net).Write();
             Thread.Sleep(10);
             byte[] da = new byte[1024];
-            byte[] gz = World.worlds[Main.Main.players[this.Net.id].level].GetGzipMap();
+            byte[] gz = World.worlds[level].GetGzipMap();
             for (int point = 0; point < gz.Length; )
             {
                 if (point + 1024 < gz.Length)
@@ -78,15 +116,15 @@ namespace Minecraft_Server.Server.Client
                 Thread.Sleep(10);
                 point += 1024;
             }
-            new Packet4LevelFin(this.Net, World.worlds[Main.Main.players[this.Net.id].level].size).Write();
+            new Packet4LevelFin(this.Net, World.worlds[level].size).Write();
             Thread.Sleep(10);
-            new Packet7Spawn(this.Net, (sbyte)-1, Main.Main.players[this.Net.id].username, World.worlds[Main.Main.players[this.Net.id].level].spawn, new Vector2()).Write();
+            new Packet7Spawn(this.Net, (sbyte)-1, username, Position, Rotation).Write();
 
             foreach (var us in Network.Network.net.connects.Values)
-                if (us.id != Net.id && Main.Main.players[us.id].level == Main.Main.players[this.Net.id].level)
+                if (us.id != Net.id && ((Server.Network.TcpClientm)us).cli.level == level)
                 {
-                    new Packet7Spawn(Net, (sbyte)us.id, Main.Main.players[us.id].username, Main.Main.players[us.id].Position, Main.Main.players[us.id].Rotation).Write();
-                    new Packet7Spawn((Server.Network.TcpClientm)us, (sbyte)Net.id, Main.Main.players[this.Net.id].username, World.worlds[Main.Main.players[this.Net.id].level].spawn, new Vector2()).Write();
+                    new Packet7Spawn(Net, (sbyte)us.id, ((Server.Network.TcpClientm)us).cli.username, ((Server.Network.TcpClientm)us).cli.Position, ((Server.Network.TcpClientm)us).cli.Rotation).Write();
+                    new Packet7Spawn((Server.Network.TcpClientm)us, (sbyte)Net.id, username, Position, Rotation).Write();
                 }
         }
 

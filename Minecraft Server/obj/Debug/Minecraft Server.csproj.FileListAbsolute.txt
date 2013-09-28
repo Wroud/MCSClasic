@@ -1,0 +1,9 @@
+C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Новая папка\bin\Debug\Config.cgf
+C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Новая папка\bin\Debug\Minecraft Server.exe.config
+C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Новая папка\bin\Debug\Minecraft Server.exe
+C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Новая папка\bin\Debug\Minecraft Server.pdb
+C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Новая папка\MCSClasic\Minecraft Server\obj\Debug\Interop.ADOX.dll
+C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Новая папка\MCSClasic\Minecraft Server\obj\Debug\Minecraft Server.csproj.ResolveComReference.cache
+C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Новая папка\MCSClasic\Minecraft Server\obj\Debug\Minecraft Server.exe
+C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Новая папка\MCSClasic\Minecraft Server\obj\Debug\Minecraft Server.pdb
+C:\Users\Wroud\Desktop\Minecraft Progect\Progect\Server\Новая папка\MCSClasic\Minecraft Server\obj\Debug\Minecraft Server.csprojResolveAssemblyReference.cache

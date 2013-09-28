@@ -187,6 +187,32 @@ namespace Minecraft_Server
 
 
 
+        public static void Write(this BinaryWriter st, Vector3 v)
+        {
+            st.Write(v.X);
+            st.Write(v.Y);
+            st.Write(v.Z);
+        }
+        public static void Write(this BinaryWriter st, Vector2 v)
+        {
+            st.Write(v.X);
+            st.Write(v.Y);
+        }
+        public static Vector3 ReadVector3(this BinaryReader st)
+        {
+            Vector3 v = new Vector3();
+            v.X = st.ReadInt16();
+            v.Y = st.ReadInt16();
+            v.Z = st.ReadInt16();
+            return v;
+        }
+        public static Vector2 ReadVector2(this BinaryReader st)
+        {
+            Vector2 v = new Vector2();
+            v.X = st.ReadByte();
+            v.Y = st.ReadByte();
+            return v;
+        }
         public static void Write(this Stream st, Vector3 v)
         {
             byte[] d1 = new[]

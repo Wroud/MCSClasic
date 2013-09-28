@@ -32,7 +32,7 @@ namespace Minecraft_Server.Server.Network
                     + "&public=" + Config.white_list 
                     + "&version=7" 
                     + "&salt=" + Config.Salt
-                    + "&users=" + Main.Main.players.Count);
+                    + "&users=" + 0);
                 Thread.Sleep(45000);
             }
         }

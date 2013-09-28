@@ -112,7 +112,7 @@ namespace Minecraft_Server.Framework.Network
             if (this.connects.ContainsKey(id))
             {
                 Utils.TimeOut(ref net.connects[id].Write, 2000);
-                this.connects[id].Close();
+                ((Server.Network.TcpClientm)this.connects[id]).Close();
                 this.connects.Remove(id);
             }
         }
