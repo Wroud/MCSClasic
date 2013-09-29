@@ -56,28 +56,28 @@ namespace Minecraft_Server.Server.Main
             this.spawn = new Vector3(50 * 32, 20 * 32 + 51, 50 * 32);
             this.memory = new byte[this.size.X * this.size.Y * this.size.Z];
             int shag = Convert.ToInt32(Config.level_seed);
+            int rndblock = 0;
             Random rand = new Random();
-
-// generation "DNO" is adminium
             for (int x = 0; x < this.size.X; x++)
                 for (int z = 0; z < this.size.Z; z++)
                 {
                     this.memory[this.Index(x, 0, z)] = 7;
                     this.memory[this.Index(x, 20, z)] = 2;
                 }
-// end gen "DNO"
-// generation "Structure"
             byte[] block = new byte[]{0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,13,14,15,16};
-            for (int y = 1; y < 20; y++)//тут мы забиваем по высоте
+            for (int y = 1; y < 20; y++)
             {
                 for (int x = 0; x < this.size.X; x++)
                     for (int z = 0; z < this.size.Z; z++)
                     {
-                       this.memory[this.Index(x, y, z)] =block[rand.Next(32)];          
+                        for (int i = 0; i < shag; i++ )
+                        {
+                            rndblock = rand.Next(32);
+                        }
+                       this.memory[this.Index(x, y, z)] =block[rndblock];          
                     }
-// end gen "Structure"
             }
-          //  this.Save();
+            this.Save();
         }
 
         public void Load()
