@@ -18,8 +18,7 @@ namespace Minecraft_Server.Server.Main
         public static void Initialize()
         {
             worlds = new Dictionary<string, World>();
-
-            worlds.Add(Config.level_name, new World(Config.level_name));
+            worlds.Add(Config.level_name, new World(Config.level_name,new Vector3(100,100,100)));
         }
 
         public byte[] memory;
@@ -54,12 +53,31 @@ namespace Minecraft_Server.Server.Main
 
         public void Generate()
         {
-            this.spawn = new Vector3(15 * 32, 1 * 32 + 51, 15 * 32);
+            this.spawn = new Vector3(50 * 32, 20 * 32 + 51, 50 * 32);
             this.memory = new byte[this.size.X * this.size.Y * this.size.Z];
+            int shag = Convert.ToInt32(Config.level_seed);
+            Random rand = new Random();
+
+// generation "DNO" is adminium
             for (int x = 0; x < this.size.X; x++)
                 for (int z = 0; z < this.size.Z; z++)
-                    this.memory[this.Index(x, 0, z)] = 1;
-            this.Save();
+                {
+                    this.memory[this.Index(x, 0, z)] = 7;
+                    this.memory[this.Index(x, 20, z)] = 2;
+                }
+// end gen "DNO"
+// generation "Structure"
+            byte[] block = new byte[]{0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,13,14,15,16};
+            for (int y = 1; y < 20; y++)//тут мы забиваем по высоте
+            {
+                for (int x = 0; x < this.size.X; x++)
+                    for (int z = 0; z < this.size.Z; z++)
+                    {
+                       this.memory[this.Index(x, y, z)] =block[rand.Next(32)];          
+                    }
+// end gen "Structure"
+            }
+          //  this.Save();
         }
 
         public void Load()
