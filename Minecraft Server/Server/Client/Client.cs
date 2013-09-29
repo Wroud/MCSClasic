@@ -21,7 +21,7 @@ namespace Minecraft_Server.Server.Client
         public string level;
         public Vector2 Rotation;
         public Vector3 Position;
-        public byte isop = 0;//0x64
+        public byte isop = 0x64;//0x64
 
         private Network.TcpClientm Net;
         public string verfikey;
@@ -34,15 +34,68 @@ namespace Minecraft_Server.Server.Client
 
         public override void Close()
         {
+
             if (!Directory.Exists("Players\\"))
                 Directory.CreateDirectory("Players\\");
             Stream st = File.Create("Players\\" + username);
             using (BinaryWriter bi = new BinaryWriter(st))
             {
+                bi.Write(isop);
                 bi.Write(level);
                 bi.Write(Rotation);
                 bi.Write(Position);
             }
+        }
+
+        public void ChangeWorld(string world, bool fw = false)
+        {
+            if (fw)
+                foreach (var us in Network.Network.net.connects.Values)
+                    if (us.id != Net.id
+                        && ((Server.Network.TcpClientm)us).cli.level == level)
+                        new PacketDespawn((Server.Network.TcpClientm)us, (sbyte)this.Net.id).Write();
+
+            if (fw)
+            {
+                this.level = world;
+                this.Position = World.worlds[level].spawn;
+                this.Rotation = new Vector2();
+            }
+            else
+                if (World.MapExit(world))
+                {
+                    if (!World.worlds.ContainsKey(world))
+                        World.worlds.Add(world, new World(world));
+                }
+                else
+                    this.level = world = Config.level_name;
+
+            new Packet13Message(this.Net, (sbyte)-1, "&aNow you are in the " + level).Write();
+
+            new Packet2Level(this.Net).Write();
+            byte[] da = new byte[1024];
+            byte[] gz = World.worlds[world].GetGzipMap();
+            for (int point = 0; point < gz.Length; )
+            {
+                if (point + 1024 < gz.Length)
+                    Array.Copy(gz, point, da, 0, 1024);
+                else
+                    Array.Copy(gz, point, da, 0, gz.Length - point);
+                new Packet3Chunk(this.Net, da, (byte)((float)point / (float)gz.Length * 100)).Write();
+                point += 1024;
+            }
+            new Packet4LevelFin(this.Net, World.worlds[world].size).Write();
+            if (fw)
+                new Packet8Position(this.Net, (sbyte)-1, Position, Rotation).Write();
+            else
+                new Packet7Spawn(this.Net, (sbyte)-1, username, Position, Rotation).Write();
+
+            foreach (var us in Network.Network.net.connects.Values)
+                if (us.id != Net.id && ((Server.Network.TcpClientm)us).cli.level == world)
+                {
+                    new Packet7Spawn(Net, (sbyte)us.id, ((Server.Network.TcpClientm)us).cli.username, ((Server.Network.TcpClientm)us).cli.Position, ((Server.Network.TcpClientm)us).cli.Rotation).Write();
+                    new Packet7Spawn((Server.Network.TcpClientm)us, (sbyte)Net.id, username, Position, Rotation).Write();
+                }
         }
 
         public void Load()
@@ -52,10 +105,31 @@ namespace Minecraft_Server.Server.Client
                 Stream st = File.OpenRead("Players\\" + username);
                 using (BinaryReader bi = new BinaryReader(st))
                 {
+                    isop = bi.ReadByte();
                     level = bi.ReadString();
-                    Rotation = bi.ReadVector2();
-                    Position = bi.ReadVector3();
+                    if (World.MapExit(level))
+                    {
+                        Rotation = bi.ReadVector2();
+                        Position = bi.ReadVector3();
+                        this.Position += new Vector3(0, 52, 0);
+                        if (!World.worlds.ContainsKey(level))
+                            World.worlds.Add(level, new World(level));
+                    }
+                    else
+                    {
+                        this.level = Config.level_name;
+                        this.Rotation = new Vector2();
+                        this.Position = World.worlds[level].spawn;
+                        this.Position += new Vector3(0, 52, 0);
+                    }
                 }
+            }
+            else
+            {
+                this.isop = 0;
+                this.level = Config.level_name;
+                this.Rotation = new Vector2();
+                this.Position = World.worlds[level].spawn;
             }
         }
 
@@ -78,9 +152,39 @@ namespace Minecraft_Server.Server.Client
 
         public void onMessage(byte color, string mes)
         {
-            mes = "[&a" + username + "&f]: " + mes;
-            foreach (var us in Network.Network.net.connects.Values)
-                new Packet13Message((Server.Network.TcpClientm)us, (sbyte)this.Net.id, mes).Write();
+            string[] parts = mes.ToLower().Split(' ');
+            switch (parts[0])
+            {
+                case "/world":
+                    if (parts[1] != " " && parts[1] != level)
+                        if (World.MapExit(parts[1]))
+                        {
+                            if (!World.worlds.ContainsKey(parts[1]))
+                                World.worlds.Add(parts[1], new World(parts[1]));
+                            ChangeWorld(parts[1], true);
+                        }
+                        else
+                        {
+                            if (parts.Length == 5)
+                            {
+                                World.worlds.Add(parts[1], new World(parts[1], new Vector3(Convert.ToInt16(parts[2]), Convert.ToInt16(parts[3]), Convert.ToInt16(parts[4]))));
+                                ChangeWorld(parts[1], true);
+                            }
+                            else
+                            {
+                                new Packet13Message(this.Net, (sbyte)-1, "&aWorld " + parts[1] + " not found").Write();
+                                new Packet13Message(this.Net, (sbyte)-1, "&aUse \"/world [name]\" for teleport to the world").Write();
+                                new Packet13Message(this.Net, (sbyte)-1, "&aUse \"/world [name] [x] [y] [z]\" to create worlt").Write();
+                                new Packet13Message(this.Net, (sbyte)-1, "&a with size x,y,z").Write();
+                            }
+                        }
+                    break;
+                default:
+                    mes = "[&a" + username + "&f]: " + mes;
+                    foreach (var us in Network.Network.net.connects.Values)
+                        new Packet13Message((Server.Network.TcpClientm)us, (sbyte)this.Net.id, mes).Write();
+                    break;
+            }
         }
 
         public void onPing(byte s, string name)
@@ -92,40 +196,12 @@ namespace Minecraft_Server.Server.Client
             if (protocolVersion != 7)
                 new PacketKick(this.Net, "Bad protocol version").Write();
 
-            this.level = Config.level_name;
             this.username = name;
-            this.Rotation = new Vector2();
-            this.Position = World.worlds[level].spawn;
             Load();
-            //Main.Main.players.Add(this.Net.id, new Player(name));
             this.verfikey = vk;
 
             new Packet0Indentification(this.Net, protocolVersion, 0x64);//0x64 будет оп
-            Thread.Sleep(10);
-            new Packet2Level(this.Net).Write();
-            Thread.Sleep(10);
-            byte[] da = new byte[1024];
-            byte[] gz = World.worlds[level].GetGzipMap();
-            for (int point = 0; point < gz.Length; )
-            {
-                if (point + 1024 < gz.Length)
-                    Array.Copy(gz, point, da, 0, 1024);
-                else
-                    Array.Copy(gz, point, da, 0, gz.Length - point);
-                new Packet3Chunk(this.Net, da, (byte)(point / gz.Length * 100)).Write();
-                Thread.Sleep(10);
-                point += 1024;
-            }
-            new Packet4LevelFin(this.Net, World.worlds[level].size).Write();
-            Thread.Sleep(10);
-            new Packet7Spawn(this.Net, (sbyte)-1, username, Position, Rotation).Write();
-
-            foreach (var us in Network.Network.net.connects.Values)
-                if (us.id != Net.id && ((Server.Network.TcpClientm)us).cli.level == level)
-                {
-                    new Packet7Spawn(Net, (sbyte)us.id, ((Server.Network.TcpClientm)us).cli.username, ((Server.Network.TcpClientm)us).cli.Position, ((Server.Network.TcpClientm)us).cli.Rotation).Write();
-                    new Packet7Spawn((Server.Network.TcpClientm)us, (sbyte)Net.id, username, Position, Rotation).Write();
-                }
+            ChangeWorld(this.level);
         }
 
         public void onKick()

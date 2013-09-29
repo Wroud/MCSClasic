@@ -21,7 +21,7 @@ namespace Minecraft_Server
             tc.buffer.Position = 0;
             try
             {
-                tc.NetStream.WriteAsync(data, 0, pos);
+                tc.NetStream.Write(data, 0, pos);
             }
             catch
             {

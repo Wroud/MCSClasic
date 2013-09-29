@@ -72,6 +72,7 @@
     <Compile Include="Server\Network\Packets\Packet8Position.cs" />
     <Compile Include="Server\Network\Packets\Client\Packet5Block.cs" />
     <Compile Include="Server\Network\Packets\Packet0Indentification.cs" />
+    <Compile Include="Server\Network\Packets\Server\PacketDespawn.cs" />
     <Compile Include="Server\Network\Packets\Server\Packet6SetBlock.cs" />
     <Compile Include="Server\Network\Packets\Server\PacketKick.cs" />
     <Compile Include="Server\Network\Packets\Server\Packet2Level.cs" />
@@ -85,7 +86,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server\Client\Client.cs" />
-    <Compile Include="Server\Client\Player.cs" />
     <Compile Include="Server\Main\Main.cs" />
     <Compile Include="Server\Network\NetExtensions.cs" />
     <Compile Include="Server\Network\Network.cs" />

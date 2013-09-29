@@ -14,11 +14,22 @@ namespace Minecraft_Server.Server.Main
     class World
     {
         public static Dictionary<string, World> worlds;
+        public static string[] maps;
 
         public static void Initialize()
         {
             worlds = new Dictionary<string, World>();
-            worlds.Add(Config.level_name, new World(Config.level_name,new Vector3(100,100,100)));
+
+            worlds.Add(Config.level_name, new World(Config.level_name));
+        }
+
+        public static bool MapExit(string name)
+        {
+            maps = Directory.GetFiles("Worlds\\");
+            foreach (string s in maps)
+                if ("Worlds\\" + name + ".btm" == s)
+                    return true;
+            return false;
         }
 
         public byte[] memory;
@@ -38,14 +49,14 @@ namespace Minecraft_Server.Server.Main
 
         public World(string f, Vector3 s = null)
         {
-            if (s == null) 
+            if (s == null)
                 s = new Vector3(256, 4, 256);
             this.size = s;
             this.mpf = f;
 
             if (!Directory.Exists("Worlds\\"))
                 Directory.CreateDirectory("Worlds\\");
-            if (File.Exists(f + ".btm"))
+            if (File.Exists("Worlds\\"+f + ".btm"))
                 this.Load();
             else
                 this.Generate();
@@ -53,37 +64,18 @@ namespace Minecraft_Server.Server.Main
 
         public void Generate()
         {
-            this.spawn = new Vector3(50 * 32, 20 * 32 + 51, 50 * 32);
+            this.spawn = new Vector3(15 * 32, 1 * 32 + 51, 15 * 32);
             this.memory = new byte[this.size.X * this.size.Y * this.size.Z];
-            int shag = Convert.ToInt32(Config.level_seed);
-            int rndblock = 0;
-            Random rand = new Random();
             for (int x = 0; x < this.size.X; x++)
                 for (int z = 0; z < this.size.Z; z++)
-                {
-                    this.memory[this.Index(x, 0, z)] = 7;
-                    this.memory[this.Index(x, 20, z)] = 2;
-                }
-            byte[] block = new byte[]{0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,13,14,15,16};
-            for (int y = 1; y < 20; y++)
-            {
-                for (int x = 0; x < this.size.X; x++)
-                    for (int z = 0; z < this.size.Z; z++)
-                    {
-                        for (int i = 0; i < shag; i++ )
-                        {
-                            rndblock = rand.Next(32);
-                        }
-                       this.memory[this.Index(x, y, z)] =block[rndblock];          
-                    }
-            }
+                    this.memory[this.Index(x, 0, z)] = 1;
             this.Save();
         }
 
         public void Load()
         {
             Log.Info("Загрузка карты {0}", this.mpf);
-            Stream st = File.OpenRead("Worlds\\"+this.mpf + ".btm");
+            Stream st = File.OpenRead("Worlds\\" + this.mpf + ".btm");
             using (GZipStream read = new GZipStream(st, CompressionMode.Decompress))
             {
                 byte[] l = new byte[4];
