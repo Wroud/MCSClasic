@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Minecraft_Server.Server.Utils
 {
     public class Vector2
@@ -35,7 +29,7 @@ namespace Minecraft_Server.Server.Utils
         }
         public static Vector2 operator *(Vector2 one, byte two)
         {
-            one.X *=two;
+            one.X *= two;
             one.Y *= two;
             return one;
         }

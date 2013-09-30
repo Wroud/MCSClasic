@@ -1,10 +1,4 @@
-﻿using Minecraft_Server.Framework.Network;
-using Minecraft_Server.Server.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Minecraft_Server.Server.Utils;
 
 namespace Minecraft_Server.Server.Network.Packets
 {
@@ -28,10 +22,12 @@ namespace Minecraft_Server.Server.Network.Packets
             d.NetStream.ReadByte(d);
             Vector3 pos = d.NetStream.ReadVector3();
             Vector2 rot = d.NetStream.ReadVector2();
-            d.cli.onPosition(pos,rot);
+            d.cli.onPosition(pos, rot);
         }
         public override void Write()
         {
+            Framework.Util.Utils.TimeOut(ref this.data.Write, 300);
+            this.data.Write = true;
             this.data.Write(opcode);
             this.data.Write(id);
             this.data.Write(pos);

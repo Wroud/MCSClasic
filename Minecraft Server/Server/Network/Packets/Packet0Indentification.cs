@@ -1,10 +1,4 @@
-﻿using Minecraft_Server.Framework.Network;
-using Minecraft_Server.Server.Util;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Minecraft_Server.Server.Util;
 
 namespace Minecraft_Server.Server.Network.Packets
 {
@@ -14,7 +8,7 @@ namespace Minecraft_Server.Server.Network.Packets
         private byte protocolVersion;
         private byte usertype;
 
-        public Packet0Indentification(TcpClientm d,byte pv, byte ut)
+        public Packet0Indentification(TcpClientm d, byte pv, byte ut)
         {
             this.data = d;
             this.protocolVersion = pv;
@@ -27,11 +21,13 @@ namespace Minecraft_Server.Server.Network.Packets
             string str = d.NetStream.ReadString(d);
             string vk = d.NetStream.ReadString(d);
             d.NetStream.ReadByte(d);
-            d.cli.onJoin(pv,str,vk);
+            d.cli.onJoin(pv, str, vk);
         }
 
         public override void Write()
         {
+            Framework.Util.Utils.TimeOut(ref this.data.Write, 300);
+            this.data.Write = true;
             this.data.Write(opcode);
             this.data.Write(protocolVersion);
             this.data.Write(Config.server_name);

@@ -2,12 +2,9 @@
 using Minecraft_Server.Framework.Util;
 using Minecraft_Server.Server.Utils;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Minecraft_Server
 {
@@ -17,7 +14,6 @@ namespace Minecraft_Server
         {
             byte[] data = tc.buffer.ToArray();
             int pos = (int)tc.buffer.Position;
-            tc.Write = false;
             tc.buffer.Position = 0;
             try
             {
@@ -27,6 +23,7 @@ namespace Minecraft_Server
             {
                 Log.Error("Ошибка записи пакета пользователю {0}", tc.id);
             }
+            tc.Write = false;
         }
 
         public static byte[] Reverse(this byte[] tc)
@@ -44,9 +41,14 @@ namespace Minecraft_Server
         public static void Write(this TcpClientm tc, string n)
         {
             byte[] data = UnicodeEncoding.ASCII.GetBytes(n.ToCharArray());
-            tc.write.Write(data, 0, data.Length);
-            for (int i = 0; i < 64 - data.Length; i++)
-                tc.write.Write((byte)32);
+            if (data.Length < 64)
+            {
+                tc.write.Write(data, 0, data.Length);
+                for (int i = 0; i < 64 - data.Length; i++)
+                    tc.write.Write((byte)32);
+            }
+            else
+                tc.write.Write(data, 0, 64);
         }
         public static void Write(this TcpClientm tc, byte n)
         {

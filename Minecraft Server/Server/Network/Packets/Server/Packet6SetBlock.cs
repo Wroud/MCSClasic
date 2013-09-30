@@ -1,10 +1,4 @@
-﻿using Minecraft_Server.Framework.Network;
-using Minecraft_Server.Server.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Minecraft_Server.Server.Utils;
 
 namespace Minecraft_Server.Server.Network.Packets
 {
@@ -14,7 +8,7 @@ namespace Minecraft_Server.Server.Network.Packets
         private Vector3 pos;
         private byte Blocktype;
 
-        public Packet6SetBlock(TcpClientm d, Vector3 pos,byte Blocktype)
+        public Packet6SetBlock(TcpClientm d, Vector3 pos, byte Blocktype)
         {
             this.data = d;
             this.pos = pos;
@@ -26,6 +20,8 @@ namespace Minecraft_Server.Server.Network.Packets
         }
         public override void Write()
         {
+            Framework.Util.Utils.TimeOut(ref this.data.Write, 300);
+            this.data.Write = true;
             this.data.Write(opcode);
             this.data.Write(pos);
             this.data.Write(Blocktype);

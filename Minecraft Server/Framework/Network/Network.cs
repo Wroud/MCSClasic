@@ -5,11 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Linq;
 
 namespace Minecraft_Server.Framework.Network
 {
@@ -23,11 +19,11 @@ namespace Minecraft_Server.Framework.Network
         public static bool Init { get { return net.Inite; } }
         public static Read GetPacket(byte i)
         {
-                return net.packets[i];
+            return net.packets[i];
         }
         public static void AddPacket(byte i, Read p)
         {
-            net.packets.Add(i,p);
+            net.packets.Add(i, p);
         }
         public static ConcurrentQueue<Packet> MessageQueue { get { return net.messageQueue; } set { net.messageQueue = value; } }
         public static void CloseTcpClient(ushort id)
@@ -36,7 +32,7 @@ namespace Minecraft_Server.Framework.Network
         }
         #endregion
 
-        public static void Initz(Network network=null,GetClient client=null)
+        public static void Initz(Network network = null, GetClient client = null)
         {
             if (network == null)
                 net = new Network();

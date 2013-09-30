@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Minecraft_Server.Framework.Util;
+using System;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
-using Minecraft_Server;
-using Minecraft_Server.Framework.Util;
-using System.Threading;
 
 namespace Minecraft_Server.Framework.Network
 {
@@ -60,7 +54,7 @@ namespace Minecraft_Server.Framework.Network
         }
         private void AcceptPacket(IAsyncResult result)
         {
-            Utils.TimeOut(ref Proccess,2000);
+            Utils.TimeOut(ref Proccess, 2000);
             try
             {
                 if (!this.tcp.Connected)
@@ -70,20 +64,20 @@ namespace Minecraft_Server.Framework.Network
                 }
                 int bytesRead = this.NetStream.EndRead(result);
 
-                    if (bytesRead == 1)
-                    {
-                        Log.Info("Get packet: " + this.opcode[0]);
-                        APacket(this.opcode[0]);
-                    }
-                    else
-                        Network.CloseTcpClient(this.id);
-                    this.NetStream.BeginRead(this.opcode, 0, 1, this.AcceptPacket, null);
+                if (bytesRead == 1)
+                {
+                    Log.Info("Get packet: " + this.opcode[0]);
+                    APacket(this.opcode[0]);
+                }
+                else
+                    Network.CloseTcpClient(this.id);
+                this.NetStream.BeginRead(this.opcode, 0, 1, this.AcceptPacket, null);
             }
             catch
             {
                 Network.CloseTcpClient(id);
             }
         }
-        public virtual void APacket(byte o){}
+        public virtual void APacket(byte o) { }
     }
 }

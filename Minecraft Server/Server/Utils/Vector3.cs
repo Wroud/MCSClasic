@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Minecraft_Server.Server.Utils
 {
     public class Vector3
@@ -45,7 +38,7 @@ namespace Minecraft_Server.Server.Utils
         }
         public static Vector3 operator *(Vector3 one, short two)
         {
-            one.X *=two;
+            one.X *= two;
             one.Y *= two;
             one.Z *= two;
             return one;

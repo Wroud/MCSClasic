@@ -1,15 +1,8 @@
-﻿using Minecraft_Server.Framework.Network;
-using Minecraft_Server.Framework.Util;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net.Sockets;
 
 namespace Minecraft_Server.Server.Network
 {
-    class TcpClientm:Framework.Network.TcpClientm
+    class TcpClientm : Framework.Network.TcpClientm
     {
         public Client.Client cli;
 

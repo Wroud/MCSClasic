@@ -1,18 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO.Compression;
-using System.IO;
-using Minecraft_Server.Framework.Util;
+﻿using Minecraft_Server.Framework.Util;
+using Minecraft_Server.Server.Network;
+using Minecraft_Server.Server.Network.Packets;
 using Minecraft_Server.Server.Util;
 using Minecraft_Server.Server.Utils;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
+using System.Threading;
 
 namespace Minecraft_Server.Server.Main
 {
     class World
     {
+        #region Static
         public static Dictionary<string, World> worlds;
         public static string[] maps;
 
@@ -31,8 +33,24 @@ namespace Minecraft_Server.Server.Main
                     return true;
             return false;
         }
+        #endregion
 
+        public struct Block
+        {
+            public Vector3 pos;
+            public byte type;
+            public sbyte ste;
+            public Block(Vector3 p, byte t, sbyte s)
+            {
+                pos = p;
+                type = t;
+                ste = s;
+            }
+        }
         public byte[] memory;
+        public List<sbyte> players;
+        public static Thread users;
+        public ConcurrentQueue<Block> messageQueue;
         public byte this[short x, short y, short z]
         {
             get { return this.memory[this.Index(x, y, z)]; }
@@ -50,16 +68,56 @@ namespace Minecraft_Server.Server.Main
         public World(string f, Vector3 s = null)
         {
             if (s == null)
-                s = new Vector3(256, 4, 256);
+                s = new Vector3(256, 64, 256);
             this.size = s;
             this.mpf = f;
 
+            players = new List<sbyte>();
+            messageQueue = new ConcurrentQueue<Block>();
             if (!Directory.Exists("Worlds\\"))
                 Directory.CreateDirectory("Worlds\\");
-            if (File.Exists("Worlds\\"+f + ".btm"))
+            if (File.Exists("Worlds\\" + f + ".btm"))
                 this.Load();
             else
                 this.Generate();
+            users = new Thread(Users);
+            users.Start();
+        }
+        public void Users()
+        {
+            while (true)
+            {
+                try
+                {
+                    for (int i = 0; i < messageQueue.Count; i++)
+                    {
+                        Block b;
+                        if (messageQueue.TryDequeue(out b))
+                            foreach (sbyte con in players)
+                                if (con != b.ste)
+                                    new Packet6SetBlock((TcpClientm)Network.Network.net.connects[(ushort)con], b.pos, b.type).Write();
+                    }
+                }
+                catch { }
+                try
+                {
+                    foreach (sbyte con in players)
+                    {
+                        foreach (sbyte us in players)
+                            if (con != us)
+                                new Packet8Position((TcpClientm)Network.Network.net.connects[(ushort)con], us, ((Server.Network.TcpClientm)Network.Network.net.connects[(ushort)us]).cli.Position, ((Server.Network.TcpClientm)Network.Network.net.connects[(ushort)us]).cli.Rotation).Write();
+
+                    }
+                }
+                catch { }
+                Thread.Sleep(10);
+            }
+        }
+
+        public void Change(Vector3 pos, byte type, byte mod, sbyte ovner)
+        {
+            this.memory[this.Index(pos)] = (mod == 0) ? (byte)0 : type;
+            this.messageQueue.Enqueue(new World.Block(pos, (mod == 0) ? (byte)0 : type, ovner));
         }
 
         public void Generate()
@@ -94,16 +152,21 @@ namespace Minecraft_Server.Server.Main
 
         public void Save()
         {
-            Log.Info("Сохранение карты {0}", this.mpf);
-            Stream st = File.Create("Worlds\\" + this.mpf + ".btm");
-            using (GZipStream wri = new GZipStream(st, CompressionMode.Compress))
+
+            Thread tc = new Thread(() =>
             {
-                wri.Write(this.size);
-                wri.Write(this.spawn);
-                wri.Write(BitConverter.GetBytes(this.memory.Length), 0, 4);
-                wri.Write(this.memory, 0, this.memory.Length);
-            }
-            Log.Update("Карта {0} сохранена", "", 3, this.mpf);
+                Log.Info("Сохранение карты {0}", this.mpf);
+                Stream st = File.Create("Worlds\\" + this.mpf + ".btm");
+                using (GZipStream wri = new GZipStream(st, CompressionMode.Compress))
+                {
+                    wri.Write(this.size);
+                    wri.Write(this.spawn);
+                    wri.Write(BitConverter.GetBytes(this.memory.Length), 0, 4);
+                    wri.Write(this.memory, 0, this.memory.Length);
+                }
+                Log.Update("Карта {0} сохранена", "", 3, this.mpf);
+            });
+            tc.Start();
         }
 
         public byte[] GetGzipMap()

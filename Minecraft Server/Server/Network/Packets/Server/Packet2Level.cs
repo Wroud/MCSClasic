@@ -1,10 +1,4 @@
-﻿using Minecraft_Server.Framework.Network;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Minecraft_Server.Server.Network.Packets
 {
     class Packet2Level : Framework.Network.Packet
@@ -21,6 +15,8 @@ namespace Minecraft_Server.Server.Network.Packets
         }
         public override void Write()
         {
+            Framework.Util.Utils.TimeOut(ref this.data.Write, 300);
+            this.data.Write = true;
             this.data.Write(opcode);
             this.data.Flush();
         }

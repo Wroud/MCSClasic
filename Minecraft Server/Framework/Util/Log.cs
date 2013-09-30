@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Minecraft_Server.Framework.Util
 {
@@ -73,7 +69,7 @@ namespace Minecraft_Server.Framework.Util
         {
             message = args.Length > 0 ? string.Format(message, args) : message.ToString();
             if (p != "")
-                message += Points(p,c);
+                message += Points(p, c);
             Console.SetCursorPosition(0, Console.CursorTop - 1);
             switch (id)
             {
@@ -90,7 +86,7 @@ namespace Minecraft_Server.Framework.Util
         }
 
         public static ushort points = 1;
-        public static string Points(string p,int c = 3)
+        public static string Points(string p, int c = 3)
         {
             string poi = "";
             for (int i = 0; i < points; i++)
@@ -103,11 +99,11 @@ namespace Minecraft_Server.Framework.Util
 
         public static void Display(LogMessage message)
         {
-                writeTimePrefix();
-                writeTypePrefix(message.LogType, message.BGColor, message.FGColor);
-                for (int i = 0; i < 40 - message.Message.Length; i++)
-                    message.Message += " ";
-                Console.WriteLine(message.Message);
+            writeTimePrefix();
+            writeTypePrefix(message.LogType, message.BGColor, message.FGColor);
+            for (int i = 0; i < 40 - message.Message.Length; i++)
+                message.Message += " ";
+            Console.WriteLine(message.Message);
         }
     }
 }
