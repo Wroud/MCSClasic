@@ -18,9 +18,9 @@ namespace Minecraft_Server.Server.Utils
             this.Y = y;
             this.Z = z;
         }
-        public short Mnog
+        public int Mnog
         {
-            get { return (short)(this.X * this.Y * this.Z); }
+            get { return this.X * this.Y * this.Z; }
         }
         public static Vector3 operator +(Vector3 one, Vector3 two)
         {

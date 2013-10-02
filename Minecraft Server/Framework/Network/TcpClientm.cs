@@ -10,8 +10,20 @@ namespace Minecraft_Server.Framework.Network
     {
         private TcpClient tcp;
         public NetworkStream NetStream;
-        public bool Proccess = false;
-        public bool Write = false;
+        private bool _Write = false;
+        public bool Write
+        {
+            get
+            {
+                return _Write;
+            }
+            set
+            {
+                if (value)
+                    Framework.Util.Utils.TimeOut(ref _Write, 300);
+                _Write = value;
+            }
+        }
         public BinaryWriter write;
         public MemoryStream buffer;
         private byte[] opcode;
@@ -54,7 +66,6 @@ namespace Minecraft_Server.Framework.Network
         }
         private void AcceptPacket(IAsyncResult result)
         {
-            Utils.TimeOut(ref Proccess, 2000);
             try
             {
                 if (!this.tcp.Connected)
@@ -66,7 +77,7 @@ namespace Minecraft_Server.Framework.Network
 
                 if (bytesRead == 1)
                 {
-                    Log.Info("Get packet: " + this.opcode[0]);
+                    //Log.Info("Get packet: " + this.opcode[0]);
                     APacket(this.opcode[0]);
                 }
                 else

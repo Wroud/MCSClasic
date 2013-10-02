@@ -25,9 +25,20 @@ namespace Minecraft_Server
             Log.Info("Сервер запущен");
             HeartBeats.Start();
             while (true)
-                if (Console.ReadLine() == "/save")
+            {
+                string lan = Console.ReadLine();
+                if (lan == "/save")
                     foreach (var v in World.worlds.Values)
                         v.Save();
+                else
+                {
+                    string[] str = lan.Split(' ');
+                    if (str[0] == "/op")
+                        foreach (var us in Server.Network.Network.net.connects.Values)
+                            if (((Server.Network.TcpClientm)us).cli.username == str[1])
+                                ((Server.Network.TcpClientm)us).cli.isop = 0x64;
+                }
+            }
         }
     }
 }

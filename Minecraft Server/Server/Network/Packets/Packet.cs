@@ -10,7 +10,7 @@ namespace Minecraft_Server.Server.Network.Packets
         }
         public override void Write()
         {
-            Framework.Util.Utils.TimeOut(ref this.data.Write, 300);
+            //Framework.Util.Utils.TimeOut(ref this.data.Write, 300);
             this.data.Write = true;
             this.data.Write(this.opcode);
             this.data.Flush();

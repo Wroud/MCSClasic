@@ -58,6 +58,7 @@ namespace Minecraft_Server.Server.Client
 
             if (fw)
             {
+                World.worlds[level].players.Remove((sbyte)Net.id);
                 this.level = world;
                 this.Position = World.worlds[level].spawn;
                 this.Rotation = new Vector2();

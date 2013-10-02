@@ -20,14 +20,20 @@ namespace Minecraft_Server.Server.Network
         {
             while (true)
             {
-                http.DownloadData("https://minecraft.net/heartbeat.jsp"
-                    + "?port=" + Config.server_port
-                    + "&max=" + Config.max_players
-                    + "&name=" + Config.server_name
-                    + "&public=" + Config.white_list
-                    + "&version=7"
-                    + "&salt=" + Config.Salt
-                    + "&users=" + 0);
+                try
+                {
+                    http.DownloadData("https://minecraft.net/heartbeat.jsp"
+                        + "?port=" + Config.server_port
+                        + "&max=" + Config.max_players
+                        + "&name=" + Config.server_name
+                        + "&public=" + Config.white_list
+                        + "&version=7"
+                        + "&salt=" + Config.Salt
+                        + "&users=" + Main.Main.players);
+                }
+                catch {
+                    Log.Info("HeartBeats: Не удалось выполнить запрос");
+                }
                 Thread.Sleep(45000);
             }
         }

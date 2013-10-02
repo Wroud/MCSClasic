@@ -21,12 +21,31 @@ namespace Minecraft_Server.Server.Network.Packets
         }
         public override void Write()
         {
-            Framework.Util.Utils.TimeOut(ref this.data.Write, 300);
-            this.data.Write = true;
-            this.data.Write(opcode);
-            this.data.Write(id);
-            this.data.Write(message);
-            this.data.Flush();
+            if (message.Length <= 64)
+            {
+                this.data.Write = true;
+                this.data.Write(opcode);
+                this.data.Write(id);
+                this.data.Write(message);
+                this.data.Flush();
+            }
+            else
+            {
+                for (int i = 0; i < message.Length; )
+                {
+                    string mes;
+                    if (i < message.Length - 64)
+                        mes = message.Substring(i, 64);
+                    else
+                        mes = message.Substring(i, message.Length - i);
+                    this.data.Write = true;
+                    this.data.Write(opcode);
+                    this.data.Write(id);
+                    this.data.Write(mes);
+                    this.data.Flush();
+                    i += 64;
+                }
+            }
         }
     }
 }

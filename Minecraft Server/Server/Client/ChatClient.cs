@@ -25,7 +25,28 @@ namespace Minecraft_Server.Server.Client
                         {
                             if (parts.Length == 5)
                             {
-                                World.worlds.Add(parts[1], new World(parts[1], new Vector3(Convert.ToInt16(parts[2]), Convert.ToInt16(parts[3]), Convert.ToInt16(parts[4]))));
+                                Vector3 size = new Vector3(Convert.ToInt16(parts[2]), Convert.ToInt16(parts[3]), Convert.ToInt16(parts[4]));
+                                if (size.Mnog <= ((isop != 0) ? 1024 * 64 * 1024 : 512 * 64 * 512))
+                                {
+                                    World.worlds.Add(parts[1], new World(parts[1], size));
+                                    ChangeWorld(parts[1], true);
+                                }
+                                else
+                                    new Packet13Message(this.Net, (sbyte)-1, "&aMax size x*y*z = 512*64*512 (op 1024*64*1024) for sample").Write();
+                            }
+                            else if (parts.Length == 3)
+                            {
+                                Vector3 size;
+                                if (parts[2] == "max")
+                                    size = new Vector3(1024, 64, 1024);
+                                else if (parts[2] == "min")
+                                    size = new Vector3(64, 64, 64);
+                                else
+                                {
+                                    new Packet13Message(this.Net, (sbyte)-1, "&aWrong message").Write();
+                                    return;
+                                }
+                                World.worlds.Add(parts[1], new World(parts[1], size));
                                 ChangeWorld(parts[1], true);
                             }
                             else
@@ -33,19 +54,16 @@ namespace Minecraft_Server.Server.Client
                                 new Packet13Message(this.Net, (sbyte)-1, "&aWorld " + parts[1] + " not found").Write();
                                 new Packet13Message(this.Net, (sbyte)-1, "&aUse \"/world [name]\" for teleport to the world").Write();
                                 new Packet13Message(this.Net, (sbyte)-1, "&aUse \"/world [name] [x] [y] [z]\" to create worlt").Write();
-                                new Packet13Message(this.Net, (sbyte)-1, "&a with size x,y,z").Write();
+                                new Packet13Message(this.Net, (sbyte)-1, "&awith size x, y, z").Write();
+                                new Packet13Message(this.Net, (sbyte)-1, "&aUse \"/world [name] [max/min]\" to create").Write();
+                                new Packet13Message(this.Net, (sbyte)-1, "&a512*64*512 or 64*64*64 world").Write();
+                                new Packet13Message(this.Net, (sbyte)-1, "&aMax size x*y*z = 512*64*512 (op 1024*64*1024) for sample").Write();
                             }
                         }
                     break;
                 default:
                     mes = "[&a" + username + "&f]: " + mes;
-
-                    Thread tc = new Thread(() =>
-                    {
-                        foreach (var us in Network.Network.net.connects.Values)
-                            new Packet13Message((Server.Network.TcpClientm)us, (sbyte)this.Net.id, mes).Write();
-                    });
-                    tc.Start();
+                    Main.Main.AddMesage(mes, level, (sbyte)this.Net.id, username);
                     break;
             }
         }

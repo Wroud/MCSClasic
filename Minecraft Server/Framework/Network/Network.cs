@@ -25,7 +25,6 @@ namespace Minecraft_Server.Framework.Network
         {
             net.packets.Add(i, p);
         }
-        public static ConcurrentQueue<Packet> MessageQueue { get { return net.messageQueue; } set { net.messageQueue = value; } }
         public static void CloseTcpClient(ushort id)
         {
             net.closeTcpClient(id);
@@ -52,18 +51,14 @@ namespace Minecraft_Server.Framework.Network
         private TcpListener Socket;
         public Dictionary<ushort, TcpClientm> connects;
         public delegate void Read(Server.Network.TcpClientm data);
-        public ConcurrentQueue<Packet> messageQueue;
         public Dictionary<byte, Read> packets;
-        private Thread NetThread;
 
         public void Initialize()
         {
             this.connects = new Dictionary<ushort, TcpClientm>();
             this.packets = new Dictionary<byte, Read>();
-            this.messageQueue = new ConcurrentQueue<Packet>();
             this.SetPackets();
             this.Socket = new TcpListener(IPAddress.Any, 25565);
-            this.NetThread = new Thread(NetT);
             this.Inite = true;
         }
 
@@ -73,23 +68,6 @@ namespace Minecraft_Server.Framework.Network
         {
             this.Socket.Start();
             this.Socket.BeginAcceptTcpClient(this.AcceptTcpClient, null);
-            this.NetThread.Start();
-        }
-
-        private void NetT()
-        {
-            while (true)
-            {
-                for (int i = 0; i < this.messageQueue.Count; i++)
-                {
-                    Packet message = null;
-                    if (!this.messageQueue.TryDequeue(out message)) continue;
-                    message.data.Proccess = true;
-                    //message.Process();
-                    message.data.Proccess = false;
-                }
-                Thread.Sleep(1);
-            }
         }
 
         private void AcceptTcpClient(IAsyncResult result)
@@ -107,7 +85,7 @@ namespace Minecraft_Server.Framework.Network
         {
             if (this.connects.ContainsKey(id))
             {
-                Utils.TimeOut(ref net.connects[id].Write, 2000);
+                //Utils.TimeOut(ref net.connects[id].Write, 2000);
                 ((Server.Network.TcpClientm)this.connects[id]).Close();
                 this.connects.Remove(id);
             }
