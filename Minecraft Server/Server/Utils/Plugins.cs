@@ -12,9 +12,6 @@ namespace Minecraft_Server.Server.Utils
 {
     class Plugins 
     {
-<<<<<<< .mine
-
-
         public bool CreateBlock(int x, int y, int z, int BlockType)
         {
             return true;
@@ -37,8 +34,8 @@ namespace Minecraft_Server.Server.Utils
 
         public bool BannedPlayer(int ID, String Reasons)
         {
-            us=Network.Network.net.connects.Values[0];
-            new Network.Packets.PacketKick((Server.Network.TcpClientm)us,Reasons;
+         //   us=Network.Network.net.connects.Values[0];
+        //    new Network.Packets.PacketKick((Server.Network.TcpClientm)us,Reasons;
           //  new Network.Packets.PacketKick((Network.Network.net.connects[gg]),Reasons);
             return true;
         }
@@ -47,7 +44,5 @@ namespace Minecraft_Server.Server.Utils
         {
             return true;
         }
-
-
-=======>>>>>>> .theirs    }
+ }
 }
