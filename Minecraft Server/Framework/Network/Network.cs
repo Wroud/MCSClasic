@@ -58,7 +58,7 @@ namespace Minecraft_Server.Framework.Network
             this.connects = new Dictionary<ushort, TcpClientm>();
             this.packets = new Dictionary<byte, Read>();
             this.SetPackets();
-            this.Socket = new TcpListener(IPAddress.Any, 25565);
+             this.Socket = new TcpListener(IPAddress.Any, Convert.ToInt32(Config.server_port));
             this.Inite = true;
         }
 
